@@ -8,7 +8,13 @@
     <title>Pixel Position</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="">
-    {{ $slot }}
+<body class="bg-body-bg text-body-text">
+
+    <x-page-header />
+
+    <main>
+        {{ $slot }}
+    </main>
+
 </body>
 </html>

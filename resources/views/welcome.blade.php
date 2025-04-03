@@ -1,3 +1,16 @@
 <x-layout>
-    Pixel Position Setup <a href="#">Link</a>
+    <article>
+        <header class="flex justify-between mx-5 my-9">
+            <div class="flex space-x-4 items-center">
+                <h1 class="text-3xl font-bold text-primary">Featured Job</h1>
+            </div>
+
+        </header>
+        <section class="m-5 space-y-5">
+            <x-card-job-wide />
+            <x-card-job-wide />
+            <x-card-job-wide />
+        </section>
+    </article>
+    <x-job-listings />
 </x-layout>
