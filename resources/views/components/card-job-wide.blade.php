@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="flex flex-col p-5 justify-start space-y-1 text-center space-y-5">
+    <div class="flex flex-col p-5 justify-start text-center space-y-5">
         <div>
             <div class="font-bold text-primary">From $200,000 per year</div>
             <div class="text-sm">Location</div>
