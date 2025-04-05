@@ -20,7 +20,7 @@ class EmployerFactory extends Factory
         return [
             'user_id' => User::factory(),
             'name' => fake()->company(),
-            'logo_url' => fake()->imageUrl(128)
+            'logo_url' => 'https://placehold.co/44x44'
         ];
     }
 }
