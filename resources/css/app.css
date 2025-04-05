@@ -6,14 +6,14 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 
-    --color-header-bg: #000;
-    --color-header-text: #fff;
+    --color-header-bg: #141414;
+    --color-header-text: #eeeeee;
 
-    --color-body-bg: #eee;
-    --color-body-text: #666;
+    --color-body-bg: #f9f9f9;
+    --color-body-text: #808080;
 
-    --color-primary: #000;
+    --color-primary: #141414;
 }

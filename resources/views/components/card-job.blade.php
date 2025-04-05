@@ -1,25 +1,25 @@
 @props(['job'])
-<x-panel>
-    <div class="bg-gray-300 p-5 rounded-xl space-y-5">
+<x-panel class="flex flex-col">
+    <div class="flex-1 flex flex-col bg-[#e0f3ff] p-5 rounded-xl space-y-5">
         <div class="flex justify-between items-center">
             <div class="bg-body-bg px-2 py-1 rounded-full text-sm font-medium text-primary">{{ $job->created_at->format('M d, Y') }}</div>
-            <div><img class="inline-block rounded-full" src="https://placehold.co/44x44" alt="Save Job"></div>
+            <button class="cursor-pointer"><img class="inline-block w-[44px] p-2 bg-body-bg border border-black/20 hover:border-black/40 rounded-full" src="{{ Vite::asset('resources/images/icon-save.svg') }}" alt="Save Job"></button>
         </div>
         <div class="">
             <div class="">
                 <div class="mb-1 text-xs font-bold text-primary">{{ $job->employer->name }}</div>
                 <img class="inline-block rounded-full float-right" src="{{ $job->employer->logo_url }}" alt="{{ $job->employer->name }} Logo">
-                <h2 class="text-3xl font-bold text-primary">{{ $job->title }}</h2>
+                <h2 class="text-2xl font-medium text-primary break-words">{{ $job->title }}</h2>
             </div>
         </div>
-        <div class="flex flex-wrap items-start space-x-2 space-y-2">
+        <div class="flex flex-wrap items-start mt-auto space-x-2 space-y-2">
             @foreach($job->tags as $tag)
                 <x-tag :$tag />
             @endforeach
         </div>
     </div>
 
-    <div class="flex p-5 justify-between items-start space-x-1">
+    <div class="flex p-5 justify-between items-end space-x-1">
         <div>
             <div class="font-bold text-primary">{{ $job->compensation }}</div>
             <div class="text-sm">{{ $job->location }}</div>
