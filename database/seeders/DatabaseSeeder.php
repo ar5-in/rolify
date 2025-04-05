@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Employer;
+use App\Models\Job;
+use App\Models\Role;
+use App\Models\Tag;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +17,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create Tags
+        $tags = Tag::factory(7)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Create two roles
+        $roles = [
+            'recruiter' => Role::factory()->create(['title' => 'Recruiter']),
+            'candidate' => Role::factory()->create(['title' => 'Candidate'])
+        ];
+
+        // Create Users whose role is to be a recruiter
+        $recruiters = User::factory(5)->recycle($roles['recruiter'])->create();
+        // Recruiters create employers
+        $employers = Employer::factory(10)->recycle($recruiters)->create();
+        // Jobs are created for employers
+        Job::factory(20)
+            ->recycle($employers)
+            ->hasAttached($tags)
+            ->create();
+
+        // Create Users whose role is to be a candidate
+        User::factory(20)->recycle($roles['candidate'])->create();
     }
 }
