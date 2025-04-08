@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employer;
 use App\Models\Job;
 use Illuminate\Http\Request;
 
@@ -16,16 +17,32 @@ class JobsController extends Controller
 
     function show(Job $job)
     {
-        dd($job);
+        //dd($job);
     }
 
     function create()
     {
-        return view('jobs.create');
+        $employers = Employer::all();
+        return view('jobs.create', ['employers' => $employers]);
     }
 
     function store()
     {
-        dd('store new job');
+        //dd('store new job');
+    }
+
+    public function edit(Job $job)
+    {
+        return view('jobs.edit');
+    }
+
+    public function update(Request $request, Job $job)
+    {
+        //dd($job, $request->all());
+    }
+
+    public function destroy(Job $job)
+    {
+        //dd($job);
     }
 }
