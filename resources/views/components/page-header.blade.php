@@ -19,8 +19,18 @@
             <div class="relative flex items-center group/dropdown">
                 <x-page-header-icon-nav href="#" src="https://placehold.co/38x38" text="User Login" />
                 <div class="absolute top-full right-0 p-1 flex-col gap-1 bg-header-bg text-header-text hidden group-hover/dropdown:flex">
+                    @guest
                     <a class="block hover:bg-white/10 px-4 py-2 transition-colors duration-300" href="/login">Login</a>
                     <a class="block hover:bg-white/10 px-4 py-2 transition-colors duration-300" href="/register">Register</a>
+                    @endguest
+
+                    @auth
+                    <form action="/logout" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button class="block hover:bg-white/10 px-4 py-2 transition-colors duration-300">Logout</button>
+                    </form>
+                    @endauth
                 </div>
             </div>
         </nav>
