@@ -3,9 +3,9 @@
         <a class="flex items-center px-7" href="/"><img src="{{ Vite::asset('resources/images/logo.svg') }}" alt=""></a>
 
         <nav class="flex">
-            <x-page-header-nav-item href="/" :active="true">Find Jobs</x-page-header-nav-item>
-            <x-page-header-nav-item href="/jobs/saved">Saved Jobs</x-page-header-nav-item>
-            <x-page-header-nav-item href="/faq">FAQ</x-page-header-nav-item>
+            <x-page-header-nav-item href="/" :active="request()->is('/')">Find Jobs</x-page-header-nav-item>
+            <x-page-header-nav-item href="/jobs/saved" :active="request()->is('jobs/saved')">Saved Jobs</x-page-header-nav-item>
+            <x-page-header-nav-item href="/faq" :active="request()->is('faq')">FAQ</x-page-header-nav-item>
         </nav>
     </div>
 

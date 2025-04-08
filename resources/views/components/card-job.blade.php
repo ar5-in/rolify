@@ -1,9 +1,13 @@
 @props(['job'])
-<x-panel class="flex flex-col">
-    <div class="flex-1 flex flex-col bg-[#e0f3ff] p-5 rounded-xl space-y-5">
+<x-panel class="flex flex-col [&:nth-child(1n)>div:first-child]:bg-[#ffe1cb] [&:nth-child(2n)>div:first-child]:bg-[#d5f6ed] [&:nth-child(3n)>div:first-child]:bg-[#e2dbf9] [&:nth-child(4n)>div:first-child]:bg-[#e0f3ff] [&:nth-child(5n)>div:first-child]:bg-[#fbe2f3] [&:nth-child(6n)>div:first-child]:bg-[#eceff5]">
+    <div class="flex-1 flex flex-col p-5 rounded-xl space-y-5">
         <div class="flex justify-between items-center">
             <div class="bg-body-bg px-2 py-1 rounded-full text-sm font-medium text-primary">{{ $job->created_at->format('M d, Y') }}</div>
-            <button class="cursor-pointer"><img class="inline-block w-[44px] p-2 bg-body-bg border border-black/20 hover:border-black/40 rounded-full" src="{{ Vite::asset('resources/images/icon-save.svg') }}" alt="Save Job"></button>
+            <form action="/jobs/saved" method="POST">
+                @csrf
+                <input type="hidden" name="id" value="{{ $job->id }}">
+                <button class="cursor-pointer"><img class="inline-block w-[44px] p-2 bg-body-bg border border-black/20 hover:border-black/40 rounded-full" src="{{ Vite::asset('resources/images/icon-save.svg') }}" alt="Save Job"></button>
+            </form>
         </div>
         <div class="">
             <div class="">

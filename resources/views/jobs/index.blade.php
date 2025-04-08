@@ -7,5 +7,5 @@
             @endforeach
         </section>
     </article>
-    <x-job-listings :$jobs />
+    <x-job-listings :$jobs title="Recommended Jobs" />
 </x-layout>

@@ -1,14 +1,21 @@
 <?php
 
+use App\Http\Controllers\FAQController;
 use App\Http\Controllers\JobsController;
+use App\Http\Controllers\SavedJobsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [JobsController::class, 'index']);
 
+Route::get('/faq', FAQController::class);
+
+Route::get('/jobs/saved', [SavedJobsController::class, 'index']);
+// Add routes to store and destroy saved jobs
+
 Route::get('/jobs/create', [JobsController::class, 'create']);
-Route::get('/jobs/saved', [JobsController::class, 'saved']);
 Route::post('/jobs', [JobsController::class, 'store']);
 Route::get('/jobs/{job}', [JobsController::class, 'show']);
+// Add routes to edit, update and destroy
 
 Route::get('/tags/{tag}', [\App\Http\Controllers\TagsController::class, 'show']);
 

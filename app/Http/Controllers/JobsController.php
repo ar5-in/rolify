@@ -14,11 +14,6 @@ class JobsController extends Controller
         return view('jobs.index', ['jobs' => $jobs, 'featuredJobs' => $featuredJobs]);
     }
 
-    function saved()
-    {
-        return view('jobs.saved');
-    }
-
     function show(Job $job)
     {
         dd($job);
