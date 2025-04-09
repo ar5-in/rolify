@@ -19,4 +19,9 @@ class Job extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Job::class, 'saved_jobs');
+    }
 }

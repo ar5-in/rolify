@@ -3,11 +3,7 @@
     <div class="flex-1 flex flex-col p-5 rounded-xl space-y-5">
         <div class="flex justify-between items-center">
             <div class="bg-body-bg px-2 py-1 rounded-full text-sm font-medium text-primary">{{ $job->created_at->format('M d, Y') }}</div>
-            <form action="/jobs/saved" method="POST">
-                @csrf
-                <input type="hidden" name="id" value="{{ $job->id }}">
-                <button class="cursor-pointer"><img class="inline-block w-[44px] p-2 bg-body-bg border border-black/20 hover:border-black/40 rounded-full" src="{{ Vite::asset('resources/images/icon-save.svg') }}" alt="Save Job"></button>
-            </form>
+            <x-toggle-saved-job :$job />
         </div>
         <div class="">
             <div class="">
