@@ -58,6 +58,6 @@ class User extends Authenticatable
 
     public function savedJobs(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Job::class, 'saved_jobs');
+        return $this->belongsToMany(Job::class, 'saved_jobs')->withTimestamps();
     }
 }

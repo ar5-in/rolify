@@ -11,7 +11,7 @@ class SavedJobsController extends Controller
     {
         // TODO sort by pivot created_at DESC
         return view('jobs.saved.index')
-            ->with('jobs', auth()->user()->savedJobs);
+            ->with('jobs', auth()->user()->savedJobs()->orderByPivot('created_at', 'desc')->get());
     }
 
     public function store(Request $request)

@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('saved_jobs', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnUpdate();
-            $table->foreignIdFor(Job::class)->constrained()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Job::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->unique(['user_id', 'job_id']);
         });
     }
 
