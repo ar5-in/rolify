@@ -37,7 +37,7 @@
                     <x-form.input id="is_featured" name="is_featured" type="checkbox" :checked="$job->is_featured" />
                 </x-form.field>
 
-                <x-form.field id="tags" label="Tags (separated by commas)" type="checkbox">
+                <x-form.field id="tags" label="Tags (separated by commas)" type="textarea">
                     <x-form.input id="tags" name="tags" type="textarea" placeholder="Laravel, web development, frontend" :value="$job->tags()->pluck('name')->implode(', ')" />
                 </x-form.field>
 

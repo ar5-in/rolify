@@ -1,12 +1,19 @@
 @props([
     'id' => 'field',
-    'label' => ''
+    'label' => '',
+    'type' => 'text'
 ])
 <div class="flex flex-col my-3 mb-5">
-    @if($label !== '')
-        <x-form.label :$label />
+    @if($type === 'checkbox' || $type === 'radio')
+        <x-form.label :$label :$id>
+            {{ $slot }}
+        </x-form.label>
+    @else
+        @if($label !== '')
+            <x-form.label :$label :$id />
+        @endif
+        {{ $slot }}
     @endif
-    {{ $slot }}
     @error($id)
         <div class="px-3 py-1 text-red-600 text-sm">
             {{ $message }}
