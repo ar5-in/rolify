@@ -4,7 +4,7 @@
 @elseif($type === 'selection')
     <select name="{{ $name }}" {{ $attributes->merge(['class' => 'px-3 py-1.5 border-1 border-slate-500 rounded-lg text-primary']) }}>
         @foreach($options as $optionValue => $text)
-        <option value="{{ $optionValue }}" {{ old($name, $value) === (string)$optionValue ? 'selected' : '' }}>{{ $text }}</option>
+        <option value="{{ $optionValue }}" {{ old($name, (string)$value) === (string)$optionValue ? 'selected' : '' }}>{{ $text }}</option>
         @endforeach
     </select>
 @else

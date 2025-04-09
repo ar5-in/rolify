@@ -32,8 +32,12 @@ $locationOptions = [
                     <x-form.input id="location" name="location" type="selection" :options="$locationOptions" />
                 </x-form.field>
 
-                <x-form.field id="is_featured" label="Is Featured">
+                <x-form.field id="is_featured" label="Is Featured" type="checkbox">
                     <x-form.input id="is_featured" name="is_featured" type="checkbox" />
+                </x-form.field>
+
+                <x-form.field id="tags" label="Tags (separated by commas)" type="textarea">
+                    <x-form.input id="tags" name="tags" type="textarea" placeholder="Laravel, web development, frontend" />
                 </x-form.field>
 
                 <x-form.controls>
