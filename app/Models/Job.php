@@ -24,4 +24,14 @@ class Job extends Model
     {
         return $this->belongsToMany(Job::class, 'saved_jobs');
     }
+
+    public function applications(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(JobApplication::class);
+    }
+
+    public function getApplicationFor(User $user) : null|JobApplication
+    {
+        return $this->applications()->where('user_id', $user->id)->first();
+    }
 }

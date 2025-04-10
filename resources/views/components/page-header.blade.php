@@ -6,6 +6,7 @@
             <x-page-header-nav-item href="/" :active="request()->is('/')">Find Jobs</x-page-header-nav-item>
             <x-page-header-nav-item href="/jobs/saved" :active="request()->is('jobs/saved')">Saved Jobs</x-page-header-nav-item>
             @can('create', \App\Models\Job::class)<x-page-header-nav-item href="/jobs/created" :active="request()->is('jobs/created')">My Jobs</x-page-header-nav-item>@endcan
+            @can('create', \App\Models\JobApplication::class)<x-page-header-nav-item href="/applications" :active="request()->is('applications')">My Applications</x-page-header-nav-item>@endcan
             <x-page-header-nav-item href="/faq" :active="request()->is('faq')">FAQ</x-page-header-nav-item>
         </nav>
     </div>

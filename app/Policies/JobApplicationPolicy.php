@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Job;
+use App\Models\JobApplication;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class JobPolicy
+class JobApplicationPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -20,9 +20,10 @@ class JobPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Job $job): bool
+    public function view(User $user, JobApplication $jobApplication): bool
     {
-        return true;
+        // Either Creator of Job or Job Application can view
+        return $user->is($jobApplication->user) || $user->is($jobApplication->job->employer->user->id);
     }
 
     /**
@@ -30,30 +31,31 @@ class JobPolicy
      */
     public function create(User $user): bool
     {
-        $recruiter = Role::where('title', 'Recruiter')->first();
-        return $user->role->is($recruiter);
+        $candidate = Role::where('title', 'Candidate')->first();
+
+        return $user->role->is($candidate);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Job $job): bool
+    public function update(User $user, JobApplication $jobApplication): bool
     {
-        return $user->is($job->employer->user);
+        return $user->is($jobApplication->user);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Job $job): bool
+    public function delete(User $user, JobApplication $jobApplication): bool
     {
-        return $user->is($job->employer->user);
+        return $user->is($jobApplication->user);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Job $job): bool
+    public function restore(User $user, JobApplication $jobApplication): bool
     {
         return false;
     }
@@ -61,7 +63,7 @@ class JobPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Job $job): bool
+    public function forceDelete(User $user, JobApplication $jobApplication): bool
     {
         return false;
     }
