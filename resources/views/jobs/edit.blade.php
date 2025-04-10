@@ -44,14 +44,18 @@
                 <x-form.controls>
                     <x-form.button label="Update Job" />
                     <x-form.button label="Cancel" href="/" />
+                    @can('delete', $job)
                     <button form="delete-job" class="ml-auto text-red-600 px-6 py-2 rounded-full text-lg font-bold cursor-pointer">Delete Job</button>
+                    @endcan
                 </x-form.controls>
 
             </x-form>
+            @can('delete', $job)
             <form id="delete-job" action="/jobs/{{ $job->id }}" method="post">
                 @csrf
                 @method('DELETE')
             </form>
+            @endcan
         </x-section>
     </article>
 </x-layout>

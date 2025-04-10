@@ -5,13 +5,14 @@
         <nav class="flex">
             <x-page-header-nav-item href="/" :active="request()->is('/')">Find Jobs</x-page-header-nav-item>
             <x-page-header-nav-item href="/jobs/saved" :active="request()->is('jobs/saved')">Saved Jobs</x-page-header-nav-item>
+            @can('create', \App\Models\Job::class)<x-page-header-nav-item href="/jobs/created" :active="request()->is('jobs/created')">My Jobs</x-page-header-nav-item>@endcan
             <x-page-header-nav-item href="/faq" :active="request()->is('faq')">FAQ</x-page-header-nav-item>
         </nav>
     </div>
 
     <div class="flex space-x-10 items-stretch">
         <div class="flex items-center space-x-4">
-            <a class="block px-6 py-2 bg-header-text text-header-bg rounded-full" href="/jobs/create">Create Job</a>
+            @can('create', \App\Models\Job::class)<a class="block px-6 py-2 bg-header-text text-header-bg rounded-full" href="/jobs/create">Create Job</a>@endcan
             <div class="border border-header-text/20 px-6 py-3">Location</div>
         </div>
 
@@ -25,6 +26,7 @@
                     @endguest
 
                     @auth
+                    <div>Hi {{ auth()->user()->name }}</div>
                     <form action="/logout" method="post">
                         @csrf
                         @method('DELETE')

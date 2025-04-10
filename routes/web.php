@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CreatedJobsController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\JobsController;
 use App\Http\Controllers\SavedJobsController;
+use App\Models\Job;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [JobsController::class, 'index']);
@@ -14,11 +16,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/jobs/saved', [SavedJobsController::class, 'store']);
     Route::delete('/jobs/saved', [SavedJobsController::class, 'destroy']);
 
-    Route::get('/jobs/create', [JobsController::class, 'create']);
+    Route::get('/jobs/create', [JobsController::class, 'create'])->can('create', Job::class);
+    Route::get('/jobs/created', CreatedJobsController::class)->can('create', Job::class);
     Route::post('/jobs', [JobsController::class, 'store']);
-    Route::get('/jobs/{job}/edit', [JobsController::class, 'edit']);
-    Route::patch('/jobs/{job}', [JobsController::class, 'update']);
-    Route::delete('/jobs/{job}', [JobsController::class, 'destroy']);
+    Route::get('/jobs/{job}/edit', [JobsController::class, 'edit'])->can('update');
+    Route::patch('/jobs/{job}', [JobsController::class, 'update'])->can('update');
+    Route::delete('/jobs/{job}', [JobsController::class, 'destroy'])->can('delete');
 });
 
 Route::get('/jobs/{job}', [JobsController::class, 'show']);

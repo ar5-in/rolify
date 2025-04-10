@@ -23,8 +23,8 @@ class JobsController extends Controller
 
     function create()
     {
-        $employers = Employer::all();
-        return view('jobs.create', ['employers' => $employers]);
+        return view('jobs.create')
+            ->with('employers', auth()->user()->employers);
     }
 
     function store(Request $request)
@@ -60,7 +60,7 @@ class JobsController extends Controller
     {
         return view('jobs.edit')
             ->with('job', $job)
-            ->with('employers', Employer::all());
+            ->with('employers', auth()->user()->employers);
     }
 
     public function update(Request $request, Job $job)
