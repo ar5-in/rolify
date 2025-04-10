@@ -1,5 +1,5 @@
 @php
-$isJobSaved = auth()->user()->savedJobs()->where('job_id', $job->id)->exists();
+$isJobSaved = auth()->check() ? auth()->user()->savedJobs()->where('job_id', $job->id)->exists() : false;
 @endphp
 <form action="/jobs/saved" method="POST">
     @csrf
