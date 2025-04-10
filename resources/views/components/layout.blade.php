@@ -10,6 +10,7 @@
 </head>
 <body class="bg-body-bg text-body-text">
 
+    <x-global-notification />
     <x-page-header />
 
     <main>

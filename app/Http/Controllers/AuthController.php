@@ -25,12 +25,14 @@ class AuthController extends Controller
             throw ValidationException::withMessages(['email' => "The credentials did not match"]);
         }
 
+        $request->session()->flash('global_message_success', 'Logged in as ' . auth()->user()->name);
         return redirect('/');
     }
 
     function destroy()
     {
         Auth::logout();
+        request()->session()->flash('global_message_success', 'Logged out successfully');
         return redirect('/');
     }
 }
