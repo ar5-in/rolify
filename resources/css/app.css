@@ -16,4 +16,7 @@
     --color-body-text: #808080;
 
     --color-primary: #141414;
+
+    --color-approved: #009300;
+    --color-rejected: #ba0000;
 }

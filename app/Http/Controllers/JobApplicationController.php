@@ -13,11 +13,6 @@ class JobApplicationController extends Controller
         return view('job-applications.index')->with('jobApplications', auth()->user()->applications()->latest()->get());
     }
 
-    function show(JobApplication $jobApplication)
-    {
-        return view('job-applications.show')->with('jobApplication', $jobApplication);
-    }
-
     function create(Job $job)
     {
         return view('job-applications.create')->with('job', $job);
@@ -45,7 +40,34 @@ class JobApplicationController extends Controller
 
     function update(Request $request, JobApplication $jobApplication)
     {
-        dd($request->all(), $jobApplication);
+        if($request->has('status'))
+        {
+            $this->authorize('update-status', $jobApplication);
+            // validate
+            $attributes = $request->validate([
+                'status' => 'required'
+            ]);
+
+            // update
+            $jobApplication->update($attributes);
+            // redirect back
+            return back()->with('global_message_success', 'Application Status Updated');
+        }
+        else if($request->has('cover_letter'))
+        {
+            $this->authorize('update-cover-letter', $jobApplication);
+            // validate
+            $attributes = $request->validate([
+                'cover_letter' => 'required'
+            ]);
+
+            // update
+            $jobApplication->update($attributes);
+            // redirect back
+            return back()->with('global_message_success', 'Cover Letter Updated');
+        }
+
+        abort(403);
     }
 
     function destroy(JobApplication $jobApplication)

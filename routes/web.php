@@ -31,7 +31,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/applications/{jobApplication}/edit', [JobApplicationController::class, 'create'])->can('update', 'jobApplication');
     Route::patch('/applications/{jobApplication}', [JobApplicationController::class, 'update'])->can('update', 'jobApplication');
     Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->can('delete', 'jobApplication');
-    Route::get('/applications/{jobApplication}', [JobApplicationController::class, 'show'])->can('view', 'jobApplication');
     Route::get('/applications', [JobApplicationController::class, 'index']);
 });
 

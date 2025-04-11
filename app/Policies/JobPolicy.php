@@ -25,6 +25,11 @@ class JobPolicy
         return true;
     }
 
+    public function viewJobApplications(User $user, Job $job): bool
+    {
+        return $user->is($job->employer->user);
+    }
+
     /**
      * Determine whether the user can create models.
      */

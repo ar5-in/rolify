@@ -23,7 +23,7 @@ class JobApplicationPolicy
     public function view(User $user, JobApplication $jobApplication): bool
     {
         // Either Creator of Job or Job Application can view
-        return $user->is($jobApplication->user) || $user->is($jobApplication->job->employer->user->id);
+        return $user->is($jobApplication->user) || $user->is($jobApplication->job->employer->user);
     }
 
     /**
@@ -32,7 +32,6 @@ class JobApplicationPolicy
     public function create(User $user): bool
     {
         $candidate = Role::where('title', 'Candidate')->first();
-
         return $user->role->is($candidate);
     }
 
@@ -41,7 +40,17 @@ class JobApplicationPolicy
      */
     public function update(User $user, JobApplication $jobApplication): bool
     {
-        return $user->is($jobApplication->user);
+        return $user->is($jobApplication->user) && $jobApplication->status === 'pending' || $user->is($jobApplication->job->employer->user);
+    }
+
+    public function updateStatus(User $user, JobApplication $jobApplication): bool
+    {
+        return $user->is($jobApplication->job->employer->user);
+    }
+
+    public function updateCoverLetter(User $user, JobApplication $jobApplication): bool
+    {
+        return $user->is($jobApplication->user) && $jobApplication->status === 'pending';
     }
 
     /**
@@ -49,7 +58,7 @@ class JobApplicationPolicy
      */
     public function delete(User $user, JobApplication $jobApplication): bool
     {
-        return $user->is($jobApplication->user);
+        return $user->is($jobApplication->user) && $jobApplication->status === 'pending' || $user->is($jobApplication->job->employer->user);
     }
 
     /**

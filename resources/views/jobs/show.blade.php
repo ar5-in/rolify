@@ -18,27 +18,48 @@
             </div>
             @endcan
 
-            @if($jobApplication = $job->getApplicationFor(auth()->user()))
-                <div class="p-5 border border-black/10 rounded-2xl">
-                    <h3 class="mb-2 text-xl text-primary font-medium">Your Application <span class="text-sm px-4 py-1 bg-black/10 rounded-full ">{{ $jobApplication->status }}</span></h3>
-                    <p>You applied to this job {{ $jobApplication->created_at->diffForHumans() }}</p>
-
-                    <div class="my-4 p-3 border border-black/10 rounded-xl">
-                        <h4 class="mb-1 text-sm text-primary font-medium">Cover Letter</h4>
-                        {{ $jobApplication->cover_letter }}
-                    </div>
-
-                    <x-form action="/applications/{{ $jobApplication->id }}" method="delete">
-                        <x-form.button label="Withdraw Application" />
-                    </x-form>
+            @can('view-job-applications', $job)
+            <div class="mt-5 pt-2 border-t border-t-black/10">
+                <h3 class="my-3 text-lg font-bold text-primary">Applications</h3>
+                @if($job->applications->isEmpty())
+                <div class="p-10 text-2xl text-center font-medium text-black/20">
+                    No application received yet
                 </div>
-            @else
-            @can('create', \App\Models\JobApplication::class)
-                <div class="flex mt-5 justify-between">
-                    <a class="inline-block bg-primary text-body-bg px-6 py-2 rounded-full text-lg font-bold cursor-pointer" href="/jobs/{{ $job->id }}/apply">Apply Now</a>
-                </div>
+                @else
+                    @foreach($job->applications as $jobApplication)
+                        <div class="p-5 border border-black/10 rounded-2xl">
+                            <h4 class="mb-2 text-xl font-medium">Applicant: <span class="text-primary">{{ $jobApplication->user->name }} ({{ $jobApplication->user->email }})</span></h4>
+                            <h5 class="mb-1 text-sm text-primary font-medium">Cover letter</h5>
+
+                            {{ $jobApplication->cover_letter }}
+
+                            @can('update-status', $jobApplication)
+                            @if($jobApplication->status === 'pending')
+                            <div class="flex gap-2 mt-5 pt-5 border-t border-t-black/10">
+                                <x-form action="{{ url('/applications/' . $jobApplication->id) }}" method="patch">
+                                    <input type="hidden" name="status" value="approved">
+                                    <button class="bg-green-800 text-body-bg px-6 py-2 rounded-full text-lg font-bold cursor-pointer">Approve Application</button>
+                                </x-form>
+
+                                <x-form action="{{ url('/applications/' . $jobApplication->id) }}" method="patch">
+                                    <input type="hidden" name="status" value="rejected">
+                                    <button class="bg-amber-900 text-body-bg px-6 py-2 rounded-full text-lg font-bold cursor-pointer">Reject Application</button>
+                                </x-form>
+                            </div>
+                            @else
+                                @php $statusClasses = ['approved' => 'text-approved', 'rejected' => 'text-rejected'] @endphp
+                                <div class="mt-5 pt-5 border-t border-t-black/10 {{ $statusClasses[$jobApplication->status] }}">You {{ $jobApplication->status }} the application</div>
+                            @endif
+                            @endcan
+
+
+                        </div>
+                    @endforeach
+                @endif
+            </div>
             @endcan
-            @endif
+
+            <x-job-applicant-controls :$job />
         </x-section>
     </article>
 </x-layout>
