@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [JobsController::class, 'index']);
 
-Route::get('/faq', FAQController::class);
+Route::inertia('/faq', 'FAQ');
 
 Route::middleware('auth')->group(function () {
     Route::get('/jobs/saved', [SavedJobsController::class, 'index']);
