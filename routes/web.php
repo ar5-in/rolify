@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [JobsController::class, 'index']);
 
-Route::inertia('/faq', 'FAQ');
+Route::get('/faq', FAQController::class);
+
+Route::get('/test', function () {
+    return inertia('Test');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/jobs/saved', [SavedJobsController::class, 'index']);

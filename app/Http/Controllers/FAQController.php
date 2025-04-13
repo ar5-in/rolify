@@ -9,6 +9,13 @@ class FAQController extends Controller
 {
     function __invoke()
     {
-        return Inertia::render('FAQ');
+        $questions = collect([
+            'Here is the first question, is it?',
+            'Do you want another question?'
+        ]);
+
+        return Inertia::render('FAQ')
+            ->with('heading', 'Frequently Asked Questions')
+            ->with('questions', $questions);
     }
 }
