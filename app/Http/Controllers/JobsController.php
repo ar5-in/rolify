@@ -6,19 +6,40 @@ use App\Models\Employer;
 use App\Models\Job;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class JobsController extends Controller
 {
     function index()
     {
-        $jobs = \App\Models\Job::latest()->get();
-        $featuredJobs = \App\Models\Job::where('is_featured', true)->latest()->take(3)->get();
-        return view('jobs.index', ['jobs' => $jobs, 'featuredJobs' => $featuredJobs]);
+        $jobs = \App\Models\Job::with('employer', 'tags')
+            ->withCasts([
+                'created_at' => 'datetime:M d, Y',
+                'updated_at' => 'datetime:M d, Y',
+            ])
+            ->latest()
+            ->get();
+
+        $featuredJobs = \App\Models\Job::with('employer', 'tags')
+            ->withCasts([
+                'created_at' => 'datetime:M d, Y',
+                'updated_at' => 'datetime:M d, Y',
+            ])
+            ->where('is_featured', true)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return Inertia::render('Jobs/Index', [
+            'jobs' => $jobs,
+            'featuredJobs' => $featuredJobs
+        ]);
     }
 
     function show(Job $job)
     {
-        return view('jobs.show', ['job' => $job]);
+        return Inertia::render('Jobs/Show')
+            ->with('job', $job);
     }
 
     function create()
@@ -42,11 +63,9 @@ class JobsController extends Controller
         $job = Job::create($attributes);
 
         // process tags
-        if($request->input('tags') ?? false)
-        {
-            foreach(explode(',', $request->input('tags')) as $tagName)
-            {
-                $tag = Tag::createOrFirst(['name'=>trim($tagName)]);
+        if ($request->input('tags') ?? false) {
+            foreach (explode(',', $request->input('tags')) as $tagName) {
+                $tag = Tag::createOrFirst(['name' => trim($tagName)]);
                 $job->tags()->attach($tag);
             }
         }
@@ -78,13 +97,11 @@ class JobsController extends Controller
         $job->update($attributes);
 
         // process tags
-        if($request->input('tags') ?? false)
-        {
+        if ($request->input('tags') ?? false) {
             // remove all
             $job->tags()->detach();
-            foreach(explode(',', $request->input('tags')) as $tagName)
-            {
-                $tag = Tag::createOrFirst(['name'=>trim($tagName)]);
+            foreach (explode(',', $request->input('tags')) as $tagName) {
+                $tag = Tag::createOrFirst(['name' => trim($tagName)]);
                 $job->tags()->attach($tag);
             }
         }

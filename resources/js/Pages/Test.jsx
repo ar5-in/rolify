@@ -9,6 +9,6 @@ const Test = ({}) => {
     </>
 }
 
-Test.layout = (page) => <Layout>{page}</Layout>
+Test.layout = (page) => page
 
 export default Test;

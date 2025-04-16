@@ -1,6 +1,6 @@
 import SiteHeader from "../Shared/SiteHeader";
 
-export default function Layout({heading, children}) {
+export default function Layout({children}) {
     return <>
         <SiteHeader />
         <main>

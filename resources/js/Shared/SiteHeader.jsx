@@ -1,12 +1,37 @@
 import {Link} from "@inertiajs/react";
+import SiteNav from "@/Shared/SiteNav.jsx";
+import SiteLogo from "@/Shared/SiteLogo.jsx";
+import SiteNavLink from "@/Shared/SiteNavLink.jsx";
 
 export default function SiteHeader () {
     return <>
         <header className="bg-header-bg text-header-text flex items-stretch justify-between h-[88px]">
             <div className="flex items-stretch">
-                <nav className="flex">
-                    <Link href="/faq" className="cursor-pointer px-7 flex items-center border-b-2 border-b-transparent hover:border-b-header-text/80 transition-colors duration-300">FAQ</Link>
-                    <Link href="/test" className="cursor-pointer px-7 flex items-center border-b-2 border-b-transparent hover:border-b-header-text/80 transition-colors duration-300">Test Link</Link>
+                <SiteLogo/>
+                <SiteNav/>
+            </div>
+
+            <div className="flex space-x-10 items-stretch">
+                <div className="flex items-center space-x-4">
+                    <SiteNavLink callToAction={true} href="/jobs/create">Create Job</SiteNavLink>
+                    <div className="border border-header-text/20 px-6 py-3">Location</div>
+                </div>
+
+                <nav className="flex items-stretch space-x-3 mr-5">
+                    <div className="relative flex items-center group/dropdown">
+                        <a className="inline-block px-2 rounded-full" href="">
+                            <img className="inline-block rounded-full" src="https://placehold.co/38x38"
+                                 alt="User Login"/>
+                        </a>
+                        <div
+                            className="absolute top-full right-0 p-1 flex-col gap-1 bg-header-bg text-header-text hidden group-hover/dropdown:flex">
+                            <Link className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300"
+                               href="/login">Login</Link>
+                            <Link className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300"
+                               href="/register">Register</Link>
+                        </div>
+
+                    </div>
                 </nav>
             </div>
         </header>
