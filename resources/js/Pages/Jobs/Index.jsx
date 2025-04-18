@@ -1,10 +1,10 @@
 import CardJob from "@/Shared/CardJob.jsx";
+import JobListings from "@/Shared/JobListings.jsx";
 
 const Index = ({ jobs, featuredJobs }) => {
     return <>
-        <section className="grid gap-6 lg:grid-cols-4">
-            {jobs.map(job => <CardJob key={job.id} job={job} />)}
-        </section>
+        <JobListings title="Featured Jobs" jobs={featuredJobs} displayAs="list" />
+        <JobListings title="Recommended Jobs" jobs={jobs} displayAs="grid" withSorting count={jobs.length} />
     </>
 }
 
