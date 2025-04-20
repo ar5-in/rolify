@@ -30,8 +30,12 @@ class Job extends Model
         return $this->hasMany(JobApplication::class);
     }
 
-    public function getApplicationFor(User $user) : null|JobApplication
+    public function getApplicationFor(?User $user) : null|JobApplication
     {
+        if(!$user)
+        {
+            return null;
+        }
         return $this->applications()->where('user_id', $user->id)->first();
     }
 }
