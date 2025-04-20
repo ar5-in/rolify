@@ -8,13 +8,14 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class RegistrationController extends Controller
 {
     function create()
     {
         $roles = Role::all();
-        return view('auth.register', ['roles' => $roles]);
+        return Inertia::render('Auth/Register')->with('roles', $roles);
     }
 
     function store(Request $request)
