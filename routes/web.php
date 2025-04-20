@@ -38,7 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/applications', [JobApplicationController::class, 'index']);
 });
 
-Route::get('/jobs/{job}', [JobsController::class, 'show']);
+Route::get('/jobs/{jobWithDetails}', [JobsController::class, 'show']);
 
 Route::get('/tags/{tag}', [\App\Http\Controllers\TagsController::class, 'show']);
 
