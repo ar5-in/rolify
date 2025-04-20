@@ -11,10 +11,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [JobsController::class, 'index']);
 
-Route::get('/faq', FAQController::class);
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [\App\Http\Controllers\RegistrationController::class, 'create']);
+    Route::post('/register', [\App\Http\Controllers\RegistrationController::class, 'store']);
 
-Route::get('/test', function () {
-    return inertia('Test');
+    Route::get('/login', [\App\Http\Controllers\AuthController::class, 'create'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\AuthController::class, 'store']);
 });
 
 Route::middleware('auth')->group(function () {
@@ -36,15 +38,16 @@ Route::middleware('auth')->group(function () {
     Route::patch('/applications/{jobApplication}', [JobApplicationController::class, 'update'])->can('update', 'jobApplication');
     Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->can('delete', 'jobApplication');
     Route::get('/applications', [JobApplicationController::class, 'index']);
+
+    Route::delete('/logout', [\App\Http\Controllers\AuthController::class, 'destroy']);
 });
 
 Route::get('/jobs/{jobWithDetails}', [JobsController::class, 'show']);
 
 Route::get('/tags/{tag}', [\App\Http\Controllers\TagsController::class, 'show']);
 
-Route::get('/register', [\App\Http\Controllers\RegistrationController::class, 'create']);
-Route::post('/register', [\App\Http\Controllers\RegistrationController::class, 'store']);
+Route::get('/faq', FAQController::class);
 
-Route::get('/login', [\App\Http\Controllers\AuthController::class, 'create'])->name('login');
-Route::post('/login', [\App\Http\Controllers\AuthController::class, 'store']);
-Route::delete('/logout', [\App\Http\Controllers\AuthController::class, 'destroy']);
+Route::get('/test', function () {
+    return inertia('Test');
+});

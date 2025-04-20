@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
     function create()
     {
-        return view('auth.login');
+        return Inertia::render('Auth/Login');
     }
 
     function store(Request $request)
