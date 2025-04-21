@@ -15,7 +15,7 @@ export default function Index({jobApplications}) {
             </div>
         </header>
         <section className="mx-5">
-            {jobApplications.map(jobApplication => <div className="flex justify-between items-center border-t border-t-black/10 py-5">
+            {jobApplications.map(jobApplication => <div key={jobApplication.id} className="flex justify-between items-center border-t border-t-black/10 py-5">
                 <Link key={jobApplication.id}
                       href={`/jobs/${jobApplication.job.id}`}><strong className="text-primary">{jobApplication.job.title}</strong> ({jobApplication.job.employer.name})</Link>
 
