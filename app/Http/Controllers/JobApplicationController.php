@@ -16,7 +16,20 @@ class JobApplicationController extends Controller
             ->latest()
             ->get();
 
-        return Inertia::render('JobApplications/Index')->with('jobApplications', $jobApplications);
+        return Inertia::render('JobApplications/Index')
+            ->with('jobApplications', $jobApplications->map(function($jobApplication) {
+                return array_merge($jobApplication->toArray(), [
+                    'authUser' => [
+                        'can' => [
+                            'view' => auth()->user() && auth()->user()->can('view', $jobApplication),
+                            'update' => auth()->user() && auth()->user()->can('update', $jobApplication),
+                            'update-status' => auth()->user() && auth()->user()->can('update', $jobApplication),
+                            'update-cover-letter' => auth()->user() && auth()->user()->can('update', $jobApplication),
+                            'delete' => auth()->user() && auth()->user()->can('delete', $jobApplication),
+                        ]
+                    ]
+                ]);
+            }));
     }
 
     function create(Job $job)

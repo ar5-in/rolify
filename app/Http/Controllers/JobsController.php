@@ -31,15 +31,43 @@ class JobsController extends Controller
             ->get();
 
         return Inertia::render('Jobs/Index', [
-            'jobs' => $jobs,
-            'featuredJobs' => $featuredJobs
+            'jobs' => $jobs->map(function($job) {
+                return array_merge($job->toArray(), [
+                    'authUser' => [
+                        'can' => [
+                            'view' => auth()->user() && auth()->user()->can('view', $job),
+                            'update' => auth()->user() && auth()->user()->can('update', $job),
+                            'delete' => auth()->user() && auth()->user()->can('delete', $job),
+                        ]
+                    ]
+                ]);
+            }),
+            'featuredJobs' => $featuredJobs->map(function($job) {
+                return array_merge($job->toArray(), [
+                    'authUser' => [
+                        'can' => [
+                            'view' => auth()->user() && auth()->user()->can('view', $job),
+                            'update' => auth()->user() && auth()->user()->can('update', $job),
+                            'delete' => auth()->user() && auth()->user()->can('delete', $job),
+                        ]
+                    ]
+                ]);
+            })
         ]);
     }
 
     function show(Job $job)
     {
         return Inertia::render('Jobs/Show')
-            ->with('job', $job);
+            ->with('job', array_merge($job->toArray(), [
+                'authUser' => [
+                    'can' => [
+                        'view' => auth()->user() && auth()->user()->can('view', $job),
+                        'update' => auth()->user() && auth()->user()->can('update', $job),
+                        'delete' => auth()->user() && auth()->user()->can('delete', $job),
+                    ]
+                ]
+            ]));
     }
 
     function create()
