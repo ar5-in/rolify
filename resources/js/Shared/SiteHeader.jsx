@@ -1,9 +1,23 @@
-import {Link} from "@inertiajs/react";
+import {Link, router, usePage} from "@inertiajs/react";
 import SiteNav from "@/Shared/SiteNav.jsx";
 import SiteLogo from "@/Shared/SiteLogo.jsx";
 import SiteNavLink from "@/Shared/SiteNavLink.jsx";
 
 export default function SiteHeader () {
+    const {auth} = usePage().props;
+
+    const guestControls = !auth.user ? <>
+        <Link className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300"
+              href="/login">Login</Link>
+        <Link className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300"
+              href="/register">Register</Link>
+    </> : '';
+
+    const userControls = auth.user ? <>
+        <div>Hi, {auth.user.name}</div>
+        <button className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300" onClick={() => router.delete('/logout')}>Logout</button>
+    </> : '';
+
     return <>
         <header className="bg-header-bg text-header-text flex items-stretch justify-between h-[88px]">
             <div className="flex items-stretch">
@@ -25,10 +39,8 @@ export default function SiteHeader () {
                         </a>
                         <div
                             className="absolute top-full right-0 p-1 flex-col gap-1 bg-header-bg text-header-text hidden group-hover/dropdown:flex">
-                            <Link className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300"
-                               href="/login">Login</Link>
-                            <Link className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300"
-                               href="/register">Register</Link>
+                            {guestControls}
+                            {userControls}
                         </div>
 
                     </div>
