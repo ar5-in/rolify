@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Job;
+use App\Models\JobApplication;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,11 +37,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = null;
+        if($request->user())
+        {
+            $user = $request->user()->only('id', 'email', 'name');
+            $user['can'] = [
+                'createJobs' => $request->user()->can('create', Job::class),
+                'createJobApplication' => $request->user()->can('create', JobApplication::class),
+            ];
+        }
+
         return [
             ...parent::share($request),
-            'auth.user' => fn () => $request->user()
-                ? $request->user()->only('id', 'email', 'name')
-                : null
+            'auth.user' => fn () => $user
         ];
     }
 }

@@ -27,7 +27,7 @@ export default function SiteHeader () {
 
             <div className="flex space-x-10 items-stretch">
                 <div className="flex items-center space-x-4">
-                    <SiteNavLink callToAction={true} href="/jobs/create">Create Job</SiteNavLink>
+                    {auth.user && auth.user.can.createJobs ? <SiteNavLink callToAction={true} href="/jobs/create">Create Job</SiteNavLink> : null}
                     <div className="border border-header-text/20 px-6 py-3">Location</div>
                 </div>
 
