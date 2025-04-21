@@ -5,12 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Job;
 use App\Models\JobApplication;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class JobApplicationController extends Controller
 {
     function index()
     {
-        return view('job-applications.index')->with('jobApplications', auth()->user()->applications()->latest()->get());
+        $jobApplications = auth()->user()->applications()
+            ->with('job.employer')
+            ->latest()
+            ->get();
+
+        return Inertia::render('JobApplications/Index')->with('jobApplications', $jobApplications);
     }
 
     function create(Job $job)
