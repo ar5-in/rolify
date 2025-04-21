@@ -4,14 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SavedJobsController extends Controller
 {
     public function index()
     {
         // TODO sort by pivot created_at DESC
-        return view('jobs.saved.index')
-            ->with('jobs', auth()->user()->savedJobs()->orderByPivot('created_at', 'desc')->get());
+        $jobs = auth()->user()->savedJobs()
+            ->with('employer', 'tags')
+            ->orderByPivot('created_at', 'desc')
+            ->withCasts([
+                'created_at' => 'datetime:M d, Y',
+                'updated_at' => 'datetime:M d, Y',
+            ])
+            ->get();
+
+        return Inertia::render('Jobs/Saved/Index')->with('jobs', $jobs);
     }
 
     public function store(Request $request)
