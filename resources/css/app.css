@@ -19,4 +19,32 @@
 
     --color-approved: #009300;
     --color-rejected: #ba0000;
+
+    --animate-notification-show: notificationShow .2s forwards;
+
+    @keyframes notificationShow {
+        0% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        100% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    --animate-notification-hide: notificationHide .2s forwards;
+
+    @keyframes notificationHide {
+        100% {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+        0% {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
 }
