@@ -27,6 +27,14 @@ class AuthController extends Controller
         }
 
         $request->session()->flash('global_message_success', 'Logged in as ' . auth()->user()->name);
+
+        if($request->expectsJson())
+        {
+            return response()->json([
+                'user' => auth()->user()->only('id', 'name', 'email')
+            ]);
+        }
+
         return redirect('/');
     }
 

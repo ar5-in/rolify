@@ -4,12 +4,17 @@ import FormActions from "@/Shared/Form/FormActions.jsx";
 import Button from "@/Shared/Button.jsx";
 import RequestForm from "@/Shared/RequestForm.jsx";
 import {router} from "@inertiajs/react";
+import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 import {useState} from "react";
 
 export default function Login({}) {
     const [errors, setErrors] = useState({});
+    const addNotification = useAddNotification();
 
     const handleResolve = (response) => {
+        const user = response.data && response.data.user ? response.data.user : null;
+        const message = user ? `Welcome ${user.name}. Logged successfully` : "Logged in successfully";
+        addNotification({message:message, type:"success"});
         router.visit('/');
     }
     const handleError = (response) => {

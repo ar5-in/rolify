@@ -2,9 +2,19 @@ import {Link, router, usePage} from "@inertiajs/react";
 import SiteNav from "@/Shared/SiteNav.jsx";
 import SiteLogo from "@/Shared/SiteLogo.jsx";
 import SiteNavLink from "@/Shared/SiteNavLink.jsx";
+import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 
 export default function SiteHeader () {
     const {auth} = usePage().props;
+    const addNotification = useAddNotification();
+
+    const handleLogoutClick = () => {
+        router.delete('/logout');
+        addNotification({
+            message: "You have been logged out",
+            type:"success"
+        });
+    }
 
     const guestControls = !auth.user ? <>
         <Link className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300"
@@ -15,7 +25,7 @@ export default function SiteHeader () {
 
     const userControls = auth.user ? <>
         <div>Hi, {auth.user.name}</div>
-        <button className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300" onClick={() => router.delete('/logout')}>Logout</button>
+        <button className="block hover:bg-white/10 px-4 py-2 transition-colors duration-300" onClick={handleLogoutClick}>Logout</button>
     </> : '';
 
     return <>
