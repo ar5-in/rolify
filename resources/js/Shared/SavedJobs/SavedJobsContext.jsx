@@ -99,5 +99,3 @@ function syncSavedJobs(jobIds) {
             console.error(error);
         });
 }
-
-const initialSavedJobs = [23,1];
