@@ -21,6 +21,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/jobs/saved', [SavedJobsController::class, 'index']);
+    Route::post('/jobs/saved/sync', [SavedJobsController::class, 'sync']);
     Route::post('/jobs/saved', [SavedJobsController::class, 'store']);
     Route::delete('/jobs/saved', [SavedJobsController::class, 'destroy']);
 

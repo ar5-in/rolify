@@ -45,6 +45,9 @@ class HandleInertiaRequests extends Middleware
                 'createJobs' => $request->user()->can('create', Job::class),
                 'createJobApplication' => $request->user()->can('create', JobApplication::class),
             ];
+            $user['savedJobs'] = $request->user()->savedJobs->map(function (Job $job) {
+                return $job->id;
+            })->all();
         }
 
         return [

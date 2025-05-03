@@ -1,9 +1,13 @@
 import Page from "@/Shared/Page.jsx";
 import Tags from "@/Shared/Tags.jsx";
 import {Link} from "@inertiajs/react";
+import ToggleSaveJob from "@/Shared/SavedJobs/ToggleSaveJob.jsx";
 
 const Show = ({ job }) => {
     return <Page heading={`${job.title} (${job.employer.name})`}>
+        <div>
+            <ToggleSaveJob jobId={job.id} />
+        </div>
         <Tags tags={job.tags}/>
         <p className="text-xl">
             Based in <strong className="text-primary">{job.location}</strong>,

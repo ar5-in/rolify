@@ -3,6 +3,7 @@ import Tag from "@/Shared/Tag.jsx";
 import Card from "@/Shared/Card.jsx";
 import CardHead from "@/Shared/CardHead.jsx";
 import CardFooter from "@/Shared/CardFooter.jsx";
+import ToggleSaveJob from "@/Shared/SavedJobs/ToggleSaveJob.jsx";
 
 const CardJob = ({job, variant = 'standard'}) => {
     /* Alternate colors between cards */
@@ -39,7 +40,7 @@ const CardJob = ({job, variant = 'standard'}) => {
                     className={variant === 'wide' ? 'flex flex-col-reverse justify-end items-center gap-2' : 'flex justify-between items-center'}>
                     <div
                         className="bg-body-bg px-2 py-1 rounded-full text-sm font-medium text-primary">{job.created_at}</div>
-                    {/* TODO Add Save Job toggle */}
+                    <ToggleSaveJob jobId={job.id} />
                 </div>
                 <div className={variant === 'wide' ? '' : ''}>
                     {jobTitle}

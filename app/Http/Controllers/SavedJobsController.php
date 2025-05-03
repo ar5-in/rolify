@@ -34,6 +34,19 @@ class SavedJobsController extends Controller
         return back();
     }
 
+    public function sync(Request $request)
+    {
+        $attributes = $request->validate([
+            'job_ids' => 'array'
+        ]);
+
+        auth()->user()->savedJobs()->sync($attributes['job_ids']);
+
+        return response()->json(['savedJobs' => auth()->user()->savedJobs()->get()->map(function (Job $job) {
+            return $job->id;
+        })->all()]);
+    }
+
     public function destroy(Request $request)
     {
         $attributes = $request->validate([
