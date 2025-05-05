@@ -1,7 +1,7 @@
 import {useState} from "react";
 
 export default function FormControl({
-    label = 'Label',
+    label,
     type = 'text',
     id,
     name,
@@ -28,17 +28,16 @@ export default function FormControl({
     {
         case 'checkbox': case 'radio':
         control = <>
-            <label htmlFor={id} className="flex gap-2 mt-2 mb-4 px-0.5 text-sm">
+            <Label label={label}>
                 <input id={id} name={name} type={type} onChange={onChange.bind(this)}
                        value={value} placeholder={placeholder} className="" checked={isChecked} />
-                {label}
-            </label>
+            </Label>
         </>
             break;
 
         case 'select':
             control = <>
-                <label htmlFor={name} className="flex gap-2 mb-2 px-0.5 text-sm">{label}</label>
+                <Label label={label} />
                 <select id={id} name={name} onChange={onChange.bind(this)}
                         value={value} className="px-3 py-1.5 border-1 border-slate-500 rounded-lg text-primary">
                     <option>Choose One</option>
@@ -47,9 +46,17 @@ export default function FormControl({
             </>
             break;
 
+        case 'textarea':
+            control = <>
+                <Label label={label} />
+                <textarea id={id} name={name} onChange={onChange.bind(this)} rows={3}
+                       value={value} placeholder={placeholder} className="px-3 py-1.5 border-1 border-slate-500 rounded-lg text-primary" />
+            </>
+            break;
+
         default:
             control = <>
-                <label htmlFor={name} className="flex gap-2 mb-2 px-0.5 text-sm">{label}</label>
+                <Label label={label} />
                 <input id={id} name={name} type={type} onChange={onChange.bind(this)}
                        value={value} placeholder={placeholder} className="px-3 py-1.5 border-1 border-slate-500 rounded-lg text-primary" />
             </>
@@ -60,5 +67,19 @@ export default function FormControl({
             {control}
             {errorMessage}
         </div>
+    )
+}
+
+function Label({label, children}) {
+    if(!label)
+    {
+        return children;
+    }
+
+    return (
+        <label htmlFor={name} className="flex gap-2 mb-2 px-0.5 text-sm">
+            {children}
+            {label}
+        </label>
     )
 }
