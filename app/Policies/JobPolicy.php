@@ -27,7 +27,7 @@ class JobPolicy
 
     public function viewJobApplications(User $user, Job $job): bool
     {
-        return $user->is($job->employer->user);
+        return $user->id === $job->employer->user_id;
     }
 
     /**
