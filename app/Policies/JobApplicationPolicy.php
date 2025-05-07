@@ -58,7 +58,7 @@ class JobApplicationPolicy
      */
     public function delete(User $user, JobApplication $jobApplication): bool
     {
-        return $user->is($jobApplication->user) && $jobApplication->status === 'pending' || $user->is($jobApplication->job->employer->user);
+        return $this->update($user, $jobApplication);
     }
 
     /**
