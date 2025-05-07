@@ -27,7 +27,7 @@ class Job extends Model
 
     public function applications(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(JobApplication::class);
+        return $this->hasMany(JobApplication::class)->orderBy('created_at');
     }
 
     public function getApplicationFor(?User $user) : null|JobApplication
