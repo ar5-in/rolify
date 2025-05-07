@@ -58,11 +58,39 @@ class JobsController extends Controller
 
     function show(Job $job)
     {
+        // If the logged-in user has applied to the job, include the application
+        $application = auth()->user()
+            ? $job->applications()
+                ->where('user_id', auth()->user()->id)
+                ->withCasts([
+                    'created_at' => 'datetime:M d, Y',
+                    'updated_at' => 'datetime:M d, Y',
+                ])
+                ->first()
+        : null;
+
+        // If the logged-in user is the owner of the job (because is the owner of the employer), include all applications
+        if(auth()->user() && auth()->user()->can('view-job-applications', $job))
+        {
+            $job->load('applications.user');
+        }
+
         return Inertia::render('Jobs/Show')
             ->with('job', array_merge($job->toArray(), [
                 'authUser' => [
+                    'application' => !is_null($application) ? array_merge($application->toArray(), [
+                        'authUser' => [
+                            'can' => [
+                                'update_status' => auth()->user() && auth()->user()->can('update-status', $application),
+                                'update_cover_letter' => auth()->user() && auth()->user()->can('update-cover-letter', $application),
+                                'update' => auth()->user() && auth()->user()->can('update', $application),
+                                'delete' => auth()->user() && auth()->user()->can('delete', $application),
+                            ]
+                        ]
+                    ]) : null,
                     'can' => [
                         'view' => auth()->user() && auth()->user()->can('view', $job),
+                        'view-job-applications' => auth()->user() && auth()->user()->can('view-job-applications', $job),
                         'update' => auth()->user() && auth()->user()->can('update', $job),
                         'delete' => auth()->user() && auth()->user()->can('delete', $job),
                     ]
