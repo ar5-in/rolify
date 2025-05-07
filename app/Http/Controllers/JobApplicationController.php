@@ -48,6 +48,11 @@ class JobApplicationController extends Controller
         // create new
         $jobApplication = auth()->user()->applications()->create($attributes);
 
+        if($request->expectsJson())
+        {
+            return response('', 201);
+        }
+
         // redirect back to job
         return redirect('/jobs/' . $jobApplication->job->id)->with('global_message_success', 'Congratulations! Your application is submitted!');
     }
@@ -69,6 +74,12 @@ class JobApplicationController extends Controller
 
             // update
             $jobApplication->update($attributes);
+
+            if($request->expectsJson())
+            {
+                return response('', 201);
+            }
+
             // redirect back
             return back()->with('global_message_success', 'Application Status Updated');
         }
@@ -82,6 +93,11 @@ class JobApplicationController extends Controller
 
             // update
             $jobApplication->update($attributes);
+
+            if($request->expectsJson())
+            {
+                return response('',201);
+            }
             // redirect back
             return back()->with('global_message_success', 'Cover Letter Updated');
         }
