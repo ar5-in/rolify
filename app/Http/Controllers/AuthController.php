@@ -25,22 +25,25 @@ class AuthController extends Controller
         {
             throw ValidationException::withMessages(['email' => "The credentials did not match"]);
         }
-
+        $request->session()->regenerate();
         $request->session()->flash('global_message_success', 'Logged in as ' . auth()->user()->name);
 
         if($request->expectsJson())
         {
             return response()->json([
-                'user' => auth()->user()->only('id', 'name', 'email')
+                'user' => auth()->user()->only('id', 'name', 'email'),
+                'intended' => $request->session()->get('url.intended')
             ]);
         }
 
-        return redirect('/');
+        return redirect()->intended();
     }
 
-    function destroy()
+    function destroy(Request $request)
     {
         Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         request()->session()->flash('global_message_success', 'Logged out successfully');
         return redirect('/');
     }
