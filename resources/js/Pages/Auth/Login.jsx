@@ -13,9 +13,10 @@ export default function Login({}) {
 
     const handleResolve = (response) => {
         const user = response.data && response.data.user ? response.data.user : null;
+        const redirectTo = response.data && response.data.intended ? response.data.intended : '/';
         const message = user ? `Welcome ${user.name}. Logged successfully` : "Logged in successfully";
         addNotification({message:message, type:"success"});
-        router.visit('/');
+        router.visit(redirectTo);
     }
     const handleError = (response) => {
         if(response.errors)
