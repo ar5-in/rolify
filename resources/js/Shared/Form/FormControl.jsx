@@ -40,7 +40,7 @@ export default function FormControl({
                 <Label label={label} />
                 <select id={id} name={name} onChange={onChange.bind(this)}
                         value={value} className="px-3 py-1.5 border-1 border-slate-500 rounded-lg text-primary">
-                    <option>Choose One</option>
+                    <option value="">Choose One</option>
                     {options.map(option => (<option key={option.value} value={option.value}>{option.label}</option>))}
                 </select>
             </>
