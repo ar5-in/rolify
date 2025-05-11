@@ -100,7 +100,7 @@ class JobsController extends Controller
 
     function create()
     {
-        return view('jobs.create')
+        return Inertia::render('Jobs/Create')
             ->with('employers', auth()->user()->employers);
     }
 
@@ -126,6 +126,13 @@ class JobsController extends Controller
             }
         }
 
+        if($request->expectsJson())
+        {
+            return response()->json([
+                'job' => $job
+            ]);
+        }
+
         request()->session()->flash('global_message_success', 'Job (' . $job->title . ') created.');
         // redirect to job details
         return redirect('/jobs/' . $job->id);
@@ -133,7 +140,7 @@ class JobsController extends Controller
 
     public function edit(Job $job)
     {
-        return view('jobs.edit')
+        return Inertia::render('Jobs/Edit')
             ->with('job', $job)
             ->with('employers', auth()->user()->employers);
     }
@@ -162,6 +169,11 @@ class JobsController extends Controller
             }
         }
 
+        if($request->expectsJson())
+        {
+            return response('', 201);
+        }
+
         request()->session()->flash('global_message_success', 'Job (' . $job->title . ') updated.');
         return redirect('/jobs/' . $job->id);
     }
@@ -170,6 +182,6 @@ class JobsController extends Controller
     {
         $job->delete();
         request()->session()->flash('global_message_success', 'Job (' . $job->title . ') deleted.');
-        return redirect('/');
+        return redirect('/jobs/created');
     }
 }
