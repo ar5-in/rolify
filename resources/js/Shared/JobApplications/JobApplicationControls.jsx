@@ -196,9 +196,9 @@ function CoverLetter({application, onUpdate}) {
                     </FormActions>
                 </RequestForm>
                 : <div>
-                    <p className="my-3 text-primary text-md">
-                        {application.cover_letter.split('\n').map(line => (<>{line}<br/></>))}
-                    </p>
+                    <div className="my-3 text-primary text-md">
+                        {application.cover_letter.split('\n').map((line, key) => (line !== '' ? <p key={key}>{line}</p> : <br key={key} />))}
+                    </div>
                     {application.authUser.can.update_cover_letter &&
                         <Button label="Edit" variant="alternate" onClick={() => setIsEditable(true)}/>}
                 </div>}
