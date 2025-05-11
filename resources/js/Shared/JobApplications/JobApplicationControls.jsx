@@ -68,9 +68,9 @@ function Applications({job}) {
                                     </span>
                                 </h4>
                                 <h5 className="mb-1 text-sm font-medium">Cover letter</h5>
-                                <p className="my-3 text-primary text-md">
-                                    {application.cover_letter.split('\n').map(line => (<>{line}<br/></>))}
-                                </p>
+                                <div className="my-3 text-primary text-md">
+                                    {application.cover_letter.split('\n').map((line, key) => (line !== '' ? <p key={key}>{line}</p> : <br key={key} />))}
+                                </div>
                                 <Status application={application} />
 
                             </div>
