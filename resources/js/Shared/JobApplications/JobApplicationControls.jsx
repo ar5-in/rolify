@@ -5,6 +5,7 @@ import FormControl from "@/Shared/Form/FormControl.jsx";
 import FormActions from "@/Shared/Form/FormActions.jsx";
 import {useState} from "react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
+import ConfirmButton from "@/Shared/ConfirmButton.jsx";
 
 export default function JobApplicationControls({job}) {
     const {auth} = usePage().props;
@@ -206,7 +207,6 @@ function CoverLetter({application, onUpdate}) {
 }
 
 function WithdrawApplication({application}) {
-    const [isDeciding, setIsDeciding] = useState(false);
     const addNotification = useAddNotification();
 
     const withdrawApplication = () => {
@@ -216,16 +216,8 @@ function WithdrawApplication({application}) {
         })
     }
 
-    if (!isDeciding) {
-        return <Button label="Withdraw Application" onClick={() => setIsDeciding(true)}/>
-    }
-
     return (
-        <div>
-            Are you sure?
-            <Button label="Yes" variant="alternate" onClick={() => withdrawApplication()}/>
-            <Button label="No" onClick={() => setIsDeciding(false)}/>
-        </div>
+        <ConfirmButton label="Withdraw Application" onConfirm={() => withdrawApplication()} />
     )
 }
 
