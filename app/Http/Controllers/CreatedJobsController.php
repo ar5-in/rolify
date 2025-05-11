@@ -13,10 +13,6 @@ class CreatedJobsController extends Controller
         $jobs = Job::query()
             ->with('employer', 'tags')
             ->whereBelongsTo(auth()->user()->employers)
-            ->withCasts([
-                'created_at' => 'datetime:M d, Y',
-                'updated_at' => 'datetime:M d, Y',
-            ])
             ->get();
 
         return Inertia::render('Jobs/Created/Index')

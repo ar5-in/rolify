@@ -13,18 +13,10 @@ class JobsController extends Controller
     function index()
     {
         $jobs = \App\Models\Job::with('employer', 'tags')
-            ->withCasts([
-                'created_at' => 'datetime:M d, Y',
-                'updated_at' => 'datetime:M d, Y',
-            ])
             ->latest()
             ->get();
 
         $featuredJobs = \App\Models\Job::with('employer', 'tags')
-            ->withCasts([
-                'created_at' => 'datetime:M d, Y',
-                'updated_at' => 'datetime:M d, Y',
-            ])
             ->where('is_featured', true)
             ->latest()
             ->take(3)
@@ -62,10 +54,6 @@ class JobsController extends Controller
         $application = auth()->user()
             ? $job->applications()
                 ->where('user_id', auth()->user()->id)
-                ->withCasts([
-                    'created_at' => 'datetime:M d, Y',
-                    'updated_at' => 'datetime:M d, Y',
-                ])
                 ->first()
         : null;
 

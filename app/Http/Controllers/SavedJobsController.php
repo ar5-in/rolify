@@ -14,10 +14,6 @@ class SavedJobsController extends Controller
         $jobs = auth()->user()->savedJobs()
             ->with('employer', 'tags')
             ->orderByPivot('created_at', 'desc')
-            ->withCasts([
-                'created_at' => 'datetime:M d, Y',
-                'updated_at' => 'datetime:M d, Y',
-            ])
             ->get();
 
         return Inertia::render('Jobs/Saved/Index')->with('jobs', $jobs);

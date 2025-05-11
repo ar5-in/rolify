@@ -1,3 +1,4 @@
+import moment from "moment";
 import {router, usePage} from "@inertiajs/react";
 import Button from "@/Shared/Button.jsx";
 import RequestForm from "@/Shared/RequestForm.jsx";
@@ -29,7 +30,7 @@ export default function JobApplicationControls({job}) {
                         </span>
                     </h3>
 
-                    <p>You applied to this job on {application.created_at}</p>
+                    <p>You applied to this job <span title={moment(application.created_at).format('MMM DD, YYYY hh:MM A')}>{moment(application.created_at).fromNow()}</span></p>
 
                     <CoverLetter application={application} onUpdate={() => router.get(`/jobs/${job.id}`)}/>
 
@@ -64,7 +65,7 @@ function Applications({job}) {
                                     <span className="text-primary">{application.user.name} ({application.user.email})</span>
                                     </span>
                                     <span>
-                                        applied on {application.created_at}
+                                        applied <span title={moment(application.created_at).format('MMM DD, YYYY hh:MM A')}>{moment(application.created_at).fromNow()}</span>
                                     </span>
                                 </h4>
                                 <h5 className="mb-1 text-sm font-medium">Cover letter</h5>
@@ -153,7 +154,7 @@ function Status({application}) {
                 </div>
                 : <div
                     className={`mt-5 pt-5 border-t border-t-black/10 text-${application.status}`}>You {application.status} the
-                    application on {application.updated_at}</div>
+                    application <span title={moment(application.updated_at).format('MMM DD, YYYY hh:MM A')}>{moment(application.updated_at).fromNow()}</span></div>
             }
         </>
     )
