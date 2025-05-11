@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/jobs/create', [JobsController::class, 'create'])->can('create', Job::class);
     Route::get('/jobs/created', CreatedJobsController::class)->can('create', Job::class);
     Route::post('/jobs', [JobsController::class, 'store']);
-    Route::get('/jobs/{job}/edit', [JobsController::class, 'edit'])->can('update', 'job');
+    Route::get('/jobs/{jobWithDetails}/edit', [JobsController::class, 'edit'])->can('update', 'jobWithDetails');
     Route::patch('/jobs/{job}', [JobsController::class, 'update'])->can('update', 'job');
     Route::delete('/jobs/{job}', [JobsController::class, 'destroy'])->can('delete', 'job');
 
