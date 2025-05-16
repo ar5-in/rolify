@@ -1,14 +1,12 @@
 import Page from "@/Shared/Page.jsx";
 import FormControl from "@/Shared/Form/FormControl.jsx";
-import FormActions from "@/Shared/Form/FormActions.jsx";
-import Button from "@/Shared/Button.jsx";
+import FormActionGroup from "@/Shared/Form/FormActionGroup.jsx";
 import RequestForm from "@/Shared/RequestForm.jsx";
 import {router} from "@inertiajs/react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
-import {useState} from "react";
+import FormAction from "@/Shared/Form/FormAction.jsx";
 
 export default function Login({}) {
-    const [errors, setErrors] = useState({});
     const addNotification = useAddNotification();
 
     const handleResolve = (response) => {
@@ -18,27 +16,21 @@ export default function Login({}) {
         addNotification({message:message, type:"success"});
         router.visit(redirectTo);
     }
-    const handleError = (response) => {
-        if(response.errors)
-        {
-            setErrors(response.errors);
-        }
-    }
 
     return (
         <Page heading="Login">
-            <RequestForm action="/login" method="post" onResolve={handleResolve.bind(this)} onError={handleError.bind(this)}>
+            <RequestForm action="/login" method="post" onResolve={handleResolve.bind(this)}>
 
                 <FormControl label="Email" name="email" type="email"
-                             placeholder="Email Address" error={errors['email']} />
+                             placeholder="Email Address" />
 
                 <FormControl label="Password" name="password" type="password"
-                             placeholder="Password" error={errors['password']}  />
+                             placeholder="Password" />
 
-                <FormActions>
-                    <Button label="Login" />
-                    <Button type="link" label="Register" href="/register" />
-                </FormActions>
+                <FormActionGroup>
+                    <FormAction label="Login" />
+                    <FormAction type="link" variant="alternate" label="Register" href="/register" />
+                </FormActionGroup>
             </RequestForm>
         </Page>
     )

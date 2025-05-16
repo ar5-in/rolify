@@ -1,13 +1,19 @@
-export default function Form({onSubmit, action='', method = 'get', children, wide}) {
+import {FormDisabledContext, FormErrorsContext} from "@/Shared/Form/FormContext.jsx";
 
+export default function Form({onSubmit, action = '', method = 'get', children, wide, errors = {}, disabled = false}) {
     const handleFormSubmit = (event) => {
         event.preventDefault();
+
+        if(disabled)
+        {
+            return;
+        }
+
         const form = event.target;
         const formData = new FormData(form);
         const values = Object.fromEntries(formData);
 
-        if(onSubmit)
-        {
+        if (onSubmit) {
             onSubmit({
                 action: form.action,
                 method: method,
@@ -17,8 +23,13 @@ export default function Form({onSubmit, action='', method = 'get', children, wid
     }
 
     return (
-        <form action={action} method={method.toLowerCase() !== 'get' ? 'post' : 'get'} onSubmit={handleFormSubmit.bind(this)} className={wide === undefined ? 'w-100' : ''}>
-            {children}
-        </form>
+        <FormErrorsContext value={errors}>
+            <FormDisabledContext value={disabled}>
+                <form action={action} method={method.toLowerCase() !== 'get' ? 'post' : 'get'}
+                      onSubmit={handleFormSubmit.bind(this)} className={wide === undefined ? 'w-100' : ''}>
+                    {children}
+                </form>
+            </FormDisabledContext>
+        </FormErrorsContext>
     )
 }

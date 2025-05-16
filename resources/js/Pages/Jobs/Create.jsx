@@ -1,14 +1,17 @@
 import Page from "@/Shared/Page.jsx";
 import FormControl from "@/Shared/Form/FormControl.jsx";
-import FormActions from "@/Shared/Form/FormActions.jsx";
-import Button from "@/Shared/Button.jsx";
+import FormActionGroup from "@/Shared/Form/FormActionGroup.jsx";
 import RequestForm from "@/Shared/RequestForm.jsx";
 import {router} from "@inertiajs/react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 import {useState} from "react";
+import FormGroup from "@/Shared/Form/FormGroup.jsx";
+import FormAction from "@/Shared/Form/FormAction.jsx";
 
 export default function Create({employers}) {
-    const [errors, setErrors] = useState({});
+    const [isAddingEmployer, setIsAddingEmployer] = useState(false);
+    const [employerOptions, setEmployerOptions] = useState(employers.map(employer => ({value: employer.id, label: employer.name})));
+    const [selectedEmployerOption, setSelectedEmployerOption] = useState(null);
     const addNotification = useAddNotification();
 
     const locationOptions = [
@@ -17,10 +20,9 @@ export default function Create({employers}) {
         {value: 'Florida', label: 'Florida'},
     ]
 
-    const handleResolve = (response) => {
+    const handleCreateJobResponse = (response) => {
         const job = response.data && response.data.job ? response.data.job : null;
-        if(job)
-        {
+        if (job) {
             addNotification({message: `'${job.title}' created successfully`, type: "success"});
             router.get(`/jobs/${job.id}`);
             return;
@@ -28,38 +30,72 @@ export default function Create({employers}) {
 
         addNotification({message: "There was an error while creating the job.", type: "error"});
     }
-    const handleError = (response) => {
-        if(response.errors)
+
+    const handleCreateEmployerResponse = (response) => {
+        if(response.data.employer)
         {
-            setErrors(response.errors);
+            const newEmployer = {value: response.data.employer.id, label: response.data.employer.name};
+            setEmployerOptions([...employerOptions, newEmployer]);
+            setIsAddingEmployer(false);
+            setSelectedEmployerOption(newEmployer.value);
+            addNotification({message: `${newEmployer.label} added to the list`, type: "success"});
         }
+    }
+
+    const showNewEmployerForm = () => {
+        setIsAddingEmployer(true);
     }
 
     return (
         <Page heading="Create New Job">
-            <RequestForm wide action="/jobs" method="post" onResolve={handleResolve.bind(this)} onError={handleError.bind(this)}>
 
-                <FormControl label="Select Employer" name="employer_id" type="select" options={employers.map(employer => ({value: employer.id, label: employer.name}))}
-                             error={errors['employer_id']} />
+            {isAddingEmployer && <>
+                <RequestForm wide action="/employers" method="post" onResolve={handleCreateEmployerResponse.bind(this)}>
+                    <FormGroup label="Create New Employer">
+                        <FormControl label="Employer Name" name="name" type="text"
+                                     placeholder="ACME Corp" disabled={false} />
+                        <FormControl label="Logo URL" name="logo_url" type="text"
+                                     placeholder="https://urltologo" disabled={false} />
+                    </FormGroup>
+                    <FormActionGroup>
+                        <FormAction label="Create Employer" />
+                        <FormAction type="button" label="Cancel" variant="alternate" onClick={() => setIsAddingEmployer(false)} />
+                    </FormActionGroup>
+                </RequestForm>
+            </>}
 
-                <FormControl label="Job Title / Designation" name="title" type="text"
-                             placeholder="Junior Frontend Developer" error={errors['title']} />
+            <RequestForm wide action="/jobs" method="post" disabled={isAddingEmployer} onResolve={handleCreateJobResponse.bind(this)}>
 
-                <FormControl label="Compensation" name="compensation" type="text"
-                             placeholder="$20,000 per year" error={errors['compensation']} />
+                <FormGroup label="Employer details">
+                    <FormControl label="Select Employer" name="employer_id" type="select"
+                                 options={employerOptions} selectOption={selectedEmployerOption}
+                                 withAction actionLabel={isAddingEmployer ? 'Cancel' : 'Add New'} onAction={showNewEmployerForm} />
+                </FormGroup>
 
-                <FormControl label="Location" name="location" type="select" options={locationOptions}
-                             error={errors['location']} />
+                <FormGroup label="Job Description">
+                    <FormControl label="Job Title / Designation" name="title" type="text"
+                                 placeholder="Junior Frontend Developer" />
 
-                <FormControl label="is Featured" name="is_featured" type="checkbox" error={errors['is_featured']} initialValue="1" />
+                    <FormControl label="Compensation" name="compensation" type="text"
+                                 placeholder="$20,000 per year" />
 
-                <FormControl label="Tags" name="tags" type="textarea"
-                             placeholder="Laravel, React, Inertia, web development, frontend" error={errors['tags']} />
+                    <FormControl label="Location" name="location" type="select" options={locationOptions}
+                                 />
 
-                <FormActions>
-                    <Button label="Create Job" />
-                    <Button type="button" variant="alternate" label="Cancel" onClick={() => {history.back()}} />
-                </FormActions>
+                    <FormControl label="is Featured" name="is_featured" type="checkbox"
+                                 initialValue="1"/>
+
+                    <FormControl label="Tags" name="tags" type="textarea"
+                                 placeholder="Laravel, React, Inertia, web development, frontend"
+                                 />
+                </FormGroup>
+
+                <FormActionGroup>
+                    <FormAction label="Create" />
+                    <FormAction type="button" variant="alternate" label="Cancel" onClick={() => {
+                        history.back()
+                    }}/>
+                </FormActionGroup>
             </RequestForm>
         </Page>
     )

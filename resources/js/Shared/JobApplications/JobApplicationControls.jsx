@@ -3,10 +3,11 @@ import {router, usePage} from "@inertiajs/react";
 import Button from "@/Shared/Button.jsx";
 import RequestForm from "@/Shared/RequestForm.jsx";
 import FormControl from "@/Shared/Form/FormControl.jsx";
-import FormActions from "@/Shared/Form/FormActions.jsx";
+import FormActionGroup from "@/Shared/Form/FormActionGroup.jsx";
 import {useState} from "react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 import ConfirmButton from "@/Shared/ConfirmButton.jsx";
+import FormAction from "@/Shared/Form/FormAction.jsx";
 
 export default function JobApplicationControls({job}) {
     const {auth} = usePage().props;
@@ -191,10 +192,10 @@ function CoverLetter({application, onUpdate}) {
                                  placeholder="Write your cover letter..."
                                  error={errors['cover_letter']}/>
 
-                    <FormActions>
-                        <Button label="Update Cover Letter"/>
-                        <Button type="button" variant="alternate" label="Cancel" onClick={() => setIsEditable(false)}/>
-                    </FormActions>
+                    <FormActionGroup>
+                        <FormAction label="Update Cover Letter"/>
+                        <FormAction type="button" variant="alternate" label="Cancel" onClick={() => setIsEditable(false)}/>
+                    </FormActionGroup>
                 </RequestForm>
                 : <div>
                     <div className="my-3 text-primary text-md">
@@ -259,10 +260,10 @@ function ApplicationForm({jobId}) {
                                  placeholder="Write your cover letter..."
                                  error={errors['cover_letter']}/>
 
-                    <FormActions>
+                    <FormActionGroup>
                         <Button label="Submit Application"/>
                         <Button type="button" variant="alternate" label="Cancel" onClick={handleCancelButtonClick}/>
-                    </FormActions>
+                    </FormActionGroup>
                 </RequestForm>
             </div>
         );

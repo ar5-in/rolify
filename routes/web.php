@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->can('delete', 'jobApplication');
     Route::get('/applications', [JobApplicationController::class, 'index']);
 
+    Route::post('/employers', [\App\Http\Controllers\EmployersController::class, 'store']);
+
     Route::delete('/logout', [\App\Http\Controllers\AuthController::class, 'destroy']);
 });
 

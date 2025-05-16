@@ -1,50 +1,42 @@
-import {useState} from "react";
 import {router} from "@inertiajs/react";
 import Page from "@/Shared/Page.jsx";
 import RequestForm from "@/Shared/RequestForm.jsx";
 import FormControl from "@/Shared/Form/FormControl.jsx";
-import FormActions from "@/Shared/Form/FormActions.jsx";
-import Button from "@/Shared/Button.jsx";
+import FormActionGroup from "@/Shared/Form/FormActionGroup.jsx";
+import FormAction from "@/Shared/Form/FormAction.jsx";
 
 export default function Register({roles}) {
-    const [errors, setErrors] = useState({});
 
     const handleResolve = (response) => {
         router.visit('/');
     }
-    const handleError = (response) => {
-        if(response.errors)
-        {
-            setErrors(response.errors);
-        }
-    }
 
     return (
         <Page heading="Register">
-            <RequestForm action="/register" method="post" onResolve={handleResolve.bind(this)} onError={handleError.bind(this)}>
+            <RequestForm action="/register" method="post" onResolve={handleResolve.bind(this)}>
 
                 <FormControl label="Choose a Role" name="role_id"
                              type="select" options={roles.map(role => ({label: role.title, value: role.id}))}
-                             placeholder="Select a role" error={errors['role_id']} />
+                             placeholder="Select a role" />
 
                 <FormControl label="Name" name="name" type="text"
-                             placeholder="Your Name" error={errors['name']} />
+                             placeholder="Your Name" />
 
                 <FormControl label="Email" name="email" type="email"
-                             placeholder="Email Address" error={errors['email']} />
+                             placeholder="Email Address" />
 
                 <FormControl label="Password" name="password" type="password"
-                             placeholder="Password" error={errors['password']}  />
+                             placeholder="Password" />
 
                 <FormControl label="Confirm Password" name="password_confirmation" type="password"
-                             placeholder="Confirm Password" error={errors['password_confirmation']}  />
+                             placeholder="Confirm Password" />
                 <FormControl label="I agree to the terms" id="wants_newsletter_subscription-1"
                              name="has_agreed" type="checkbox"
-                             error={errors['wants_newsletter_subscription']} />
-                <FormActions>
-                    <Button label="Register" />
-                    <Button type="link" label="Login" href="/login" />
-                </FormActions>
+                             />
+                <FormActionGroup>
+                    <FormAction label="Register" />
+                    <FormAction type="link" variant="alternate" label="Login" href="/login" />
+                </FormActionGroup>
 
             </RequestForm>
         </Page>

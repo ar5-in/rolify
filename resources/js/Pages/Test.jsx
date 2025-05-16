@@ -8,7 +8,7 @@ import {
     NotificationsDispatchContext,
     useAddNotification
 } from "@/Shared/Notifications/NotificationsContext.jsx";
-import FormActions from "@/Shared/Form/FormActions.jsx";
+import FormActionGroup from "@/Shared/Form/FormActionGroup.jsx";
 
 let timeout = 1000;
 
@@ -19,12 +19,12 @@ const Test = ({}) => {
     return <>
         <PageHeading>This is a test page</PageHeading>
         <p>Welcome to the test page</p>
-        <FormActions>
+        <FormActionGroup>
             <Button label="Push Notification" onClick={() => addNotification({
                 timeout: timeout += 1000,
                 message:'message timeout = ' + timeout
             })}/>
-        </FormActions>
+        </FormActionGroup>
         <pre className="m-2 p-4 border border-black/10">
             {JSON.stringify(notifications, null, 4)}
         </pre>

@@ -1,6 +1,6 @@
 import {Link} from "@inertiajs/react";
 
-export default function Button({ label = 'Button', type, variant, href, onClick = () => {} }) {
+export default function Button({ label = 'Button', type, variant, href, disabled, onClick = () => {} }) {
 
     const getClasses = (variant) => {
         const classes = {
@@ -9,17 +9,19 @@ export default function Button({ label = 'Button', type, variant, href, onClick 
             'danger': 'inline-block ml-auto text-red-600 hover:bg-black/10 px-6 py-2 rounded-full text-lg font-bold cursor-pointer transition-colors duration-300'
         }
 
-        return classes[variant] ?? classes['default'];
+        const disabledClasses = ' disabled:opacity-50';
+
+        return (classes[variant] ?? classes['default']) + disabledClasses;
     }
 
     if(type === 'link')
     {
         return (
-            <Link className={getClasses(variant)} href={href} onClick={onClick.bind(this)}>{label}</Link>
+            <Link className={getClasses(variant)} disabled={disabled} href={href} onClick={onClick.bind(this)}>{label}</Link>
         )
     }
 
     return (
-        <button className={getClasses(variant)} type={type} onClick={onClick.bind(this)}>{label}</button>
+        <button className={getClasses(variant)} type={type} disabled={disabled} onClick={onClick.bind(this)}>{label}</button>
     )
 }

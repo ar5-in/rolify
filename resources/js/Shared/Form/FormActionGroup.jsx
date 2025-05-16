@@ -1,4 +1,4 @@
-export default function FormActions({children}) {
+export default function FormActionGroup({children}) {
     return (
         <div className="flex gap-2">{children}</div>
     );
