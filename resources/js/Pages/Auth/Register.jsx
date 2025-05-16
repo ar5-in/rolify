@@ -7,7 +7,7 @@ import FormAction from "@/Shared/Form/FormAction.jsx";
 
 export default function Register({roles}) {
 
-    const handleResolve = (response) => {
+    const handleResolve = () => {
         router.visit('/');
     }
 

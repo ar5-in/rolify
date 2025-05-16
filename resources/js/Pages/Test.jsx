@@ -1,18 +1,15 @@
-import {Head} from "@inertiajs/react";
-import Layout from "../Shared/Layout";
 import PageHeading from "../Shared/PageHeading";
 import Button from "@/Shared/Button.jsx";
 import {useContext} from "react";
 import {
     NotificationsContext,
-    NotificationsDispatchContext,
     useAddNotification
 } from "@/Shared/Notifications/NotificationsContext.jsx";
 import FormActionGroup from "@/Shared/Form/FormActionGroup.jsx";
 
 let timeout = 1000;
 
-const Test = ({}) => {
+export default function Test({}) {
     const notifications = useContext(NotificationsContext);
     const addNotification = useAddNotification();
 
@@ -30,7 +27,3 @@ const Test = ({}) => {
         </pre>
     </>
 }
-
-//Test.layout = (page) => page
-
-export default Test;

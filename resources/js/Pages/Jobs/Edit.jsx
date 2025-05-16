@@ -16,7 +16,7 @@ export default function Edit({job, employers}) {
         {value: 'Florida', label: 'Florida'},
     ];
 
-    const handleResolve = (response) => {
+    const handleResolve = () => {
         if (job) {
             addNotification({message: `'${job.title}' job updated`, type: "success"});
             router.get(`/jobs/${job.id}`);
