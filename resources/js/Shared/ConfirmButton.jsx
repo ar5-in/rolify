@@ -1,7 +1,7 @@
 import Button from "@/Shared/Button.jsx";
 import {useState} from "react";
 
-export default function ConfirmButton({label, message = 'Are you sure?', variant, onConfirm, onCancel}) {
+export default function ConfirmButton({label, message = 'Are you sure?', variant, disabled, onConfirm, onCancel}) {
     const [isDeciding, setIsDeciding] = useState(false);
     const [hasConfirmed, setHasConfirmed] = useState(false);
 
@@ -29,14 +29,14 @@ export default function ConfirmButton({label, message = 'Are you sure?', variant
     }
 
     if (!isDeciding) {
-        return <Button type="button" label={label} variant={variant} onClick={() => setIsDeciding(true)}/>
+        return <Button type="button" disabled={disabled} label={label} variant={variant} onClick={() => setIsDeciding(true)}/>
     }
 
     return (
         <div className={`ml-auto`}>
             {message}
-            <Button type="button" label="Yes" variant="alternate" onClick={handleConfirmButtonClick}/>
-            <Button type="button" label="No" onClick={handleCancelButtonClick}/>
+            <Button type="button" label="Yes" disabled={disabled} variant="alternate" onClick={handleConfirmButtonClick}/>
+            <Button type="button" label="No" disabled={disabled} onClick={handleCancelButtonClick}/>
         </div>
     );
 }
