@@ -50,7 +50,10 @@ export default function FormControl({
     }, [error]);
 
     useEffect(() => {
-        setValue(selectOption);
+        if(selectOption !== undefined && selectOption !== null)
+        {
+            setValue(selectOption);
+        }
     }, [selectOption]);
 
     const onChange = (event) => {
