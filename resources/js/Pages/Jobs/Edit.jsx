@@ -6,8 +6,13 @@ import {router} from "@inertiajs/react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 import ConfirmButton from "@/Shared/ConfirmButton.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
+import {useState} from "react";
+import FormGroup from "@/Shared/Form/FormGroup.jsx";
 
 export default function Edit({job, employers}) {
+    const [isAddingEmployer, setIsAddingEmployer] = useState(false);
+    const [employerOptions, setEmployerOptions] = useState(employers.map(employer => ({value: employer.id, label: employer.name})));
+    const [selectedEmployerOption, setSelectedEmployerOption] = useState(job.employer_id);
     const addNotification = useAddNotification();
 
     const locationOptions = [
@@ -16,14 +21,24 @@ export default function Edit({job, employers}) {
         {value: 'Florida', label: 'Florida'},
     ];
 
-    const handleResolve = () => {
-        if (job) {
-            addNotification({message: `'${job.title}' job updated`, type: "success"});
-            router.get(`/jobs/${job.id}`);
-            return;
-        }
+    const handleUpdateJobResponse = () => {
+        addNotification({message: `'${job.title}' updated successfully`, type: "success"});
+        router.get(`/jobs/${job.id}`);
+    }
 
-        addNotification({message: "There was an error while updating the job.", type: "error"});
+    const handleCreateEmployerResponse = (response) => {
+        if(response.data.employer)
+        {
+            const newEmployer = {value: response.data.employer.id, label: response.data.employer.name};
+            setEmployerOptions([...employerOptions, newEmployer]);
+            setIsAddingEmployer(false);
+            setSelectedEmployerOption(newEmployer.value);
+            addNotification({message: `${newEmployer.label} added to the list`, type: "success"});
+        }
+    }
+
+    const showNewEmployerForm = () => {
+        setIsAddingEmployer(!isAddingEmployer);
     }
 
     const handleDeleteJobClick = () => {
@@ -33,29 +48,48 @@ export default function Edit({job, employers}) {
 
     return (
         <Page heading={`Edit Job #${job.id}`}>
-            <RequestForm wide action={`/jobs/${job.id}`} method="patch" onResolve={handleResolve.bind(this)}>
 
-                <FormControl label="Select Employer" name="employer_id" type="select"
-                             options={employers.map(employer => ({value: employer.id, label: employer.name}))}
-                             initialValue={job.employer_id}/>
+            {isAddingEmployer && <>
+                <RequestForm wide action="/employers" method="post" onResolve={handleCreateEmployerResponse.bind(this)}>
+                    <FormGroup label="Create New Employer">
+                        <FormControl label="Employer Name" name="name" type="text"
+                                     placeholder="ACME Corp" disabled={false} />
+                        <FormControl label="Logo URL" name="logo_url" type="text"
+                                     placeholder="https://urltologo" disabled={false} />
+                    </FormGroup>
+                    <FormActionGroup>
+                        <FormAction label="Create Employer" />
+                        <FormAction type="button" label="Cancel" variant="alternate" onClick={() => setIsAddingEmployer(false)} />
+                    </FormActionGroup>
+                </RequestForm>
+            </>}
 
-                <FormControl label="Job Title / Designation" name="title" type="text"
-                             placeholder="Junior Frontend Developer" initialValue={job.title}/>
+            <RequestForm wide action={`/jobs/${job.id}`} method="patch" disabled={isAddingEmployer} onResolve={handleUpdateJobResponse.bind(this)}>
 
-                <FormControl label="Compensation" name="compensation" type="text"
-                             placeholder="$20,000 per year"
-                             initialValue={job.compensation}/>
+                <FormGroup label="Employer details">
+                    <FormControl label="Select Employer" name="employer_id" type="select"
+                                 options={employerOptions} selectOption={selectedEmployerOption} initialValue={job.employer_id}
+                                 withAction actionLabel={isAddingEmployer ? 'Cancel' : 'Add New'} onAction={showNewEmployerForm} />
+                </FormGroup>
 
-                <FormControl label="Location" name="location" type="select" options={locationOptions}
-                             initialValue={job.location}/>
+                <FormGroup label="Job Description">
+                    <FormControl label="Job Title / Designation" name="title" type="text"
+                                 placeholder="Junior Frontend Developer" initialValue={job.title}/>
 
-                <FormControl label="is Featured" name="is_featured" type="checkbox"
-                             initialValue="1" checked={job.is_featured === 1}/>
+                    <FormControl label="Compensation" name="compensation" type="text"
+                                 placeholder="$20,000 per year"
+                                 initialValue={job.compensation}/>
 
-                <FormControl label="Tags" name="tags" type="textarea"
-                             placeholder="Laravel, React, Inertia, web development, frontend"
-                             initialValue={job.tags.map(tag => tag.name).join(', ')}/>
+                    <FormControl label="Location" name="location" type="select" options={locationOptions}
+                                 initialValue={job.location}/>
 
+                    <FormControl label="is Featured" name="is_featured" type="checkbox"
+                                 initialValue="1" checked={job.is_featured === 1}/>
+
+                    <FormControl label="Tags" name="tags" type="textarea"
+                                 placeholder="Laravel, React, Inertia, web development, frontend"
+                                 initialValue={job.tags.map(tag => tag.name).join(', ')}/>
+                </FormGroup>
                 <FormActionGroup>
                     <FormAction label="Update Job"/>
                     <FormAction type="button" variant="alternate" label="Cancel" onClick={() => {
@@ -63,7 +97,7 @@ export default function Edit({job, employers}) {
                     }}/>
 
                     <ConfirmButton variant="danger" label="Delete Job" message="Permanently delete this job?"
-                                   onConfirm={handleDeleteJobClick}/>
+                                   onConfirm={handleDeleteJobClick} disabled={isAddingEmployer} />
                 </FormActionGroup>
             </RequestForm>
         </Page>
