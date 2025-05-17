@@ -13,7 +13,7 @@ export default function JobListings({jobs, title, displayAs = 'grid', withSortin
     return (
         <article>
             {titleComponent}
-            <section className={displayAs === 'list' ? 'space-y-5' : 'grid gap-6 lg:grid-cols-4'}>
+            <section className={displayAs === 'list' ? 'space-y-5' : 'grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'}>
                 {jobs.map(job => <CardJob key={job.id} job={job}
                                           variant={displayAs === 'list' ? 'wide' : 'standard'}/>)}
             </section>
