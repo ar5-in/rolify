@@ -3,7 +3,12 @@ import {CardVariantContext} from "@/Shared/CardVariantContext.jsx";
 
 export default function Card({className, variant = 'standard', children}) {
     let classes = [];
-    classes.push((variant !== 'wide' ? 'flex flex-col' : 'flex'));
+    classes.push('flex flex-col');
+    if(variant === 'wide')
+    {
+        classes.push('md:flex-row shrink-0 w-[80%] md:w-full');
+    }
+
     classes.push(className);
 
     return <CardVariantContext value={variant}>
