@@ -24,7 +24,7 @@ const CardJob = ({job, variant = 'standard'}) => {
                         className="bg-body-bg px-2 py-1 rounded-full text-sm font-medium text-primary">{moment.utc(job.created_at).local().format('MMM DD, YYYY')}</div>
                     <ToggleSaveJob jobId={job.id} />
                 </div>
-                <div className={variant === 'wide' && "flex-1"}>
+                <div className={variant === 'wide' ? "flex-1" : null}>
                     <div className="mb-1 text-xs font-bold text-primary">{job.employer.name}</div>
                     <img className="inline-block rounded-full float-right w-[44px] h-[44px] object-cover" src={job.employer.logo_url}
                          alt={`${job.employer.name} Logo`}/>
