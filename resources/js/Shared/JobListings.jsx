@@ -23,10 +23,14 @@ export default function JobListings({jobs, title, displayAs = 'grid', withSortin
     return (
         <article>
             {titleComponent}
-            <section className={classes}>
-                {jobs.map(job => <CardJob key={job.id} job={job}
-                variant={displayAs === 'list' ? 'wide' : 'standard'}/>)}
-            </section>
+            {jobs.length > 0 ? (
+                <section className={classes}>
+                    {jobs.map(job => <CardJob key={job.id} job={job}
+                    variant={displayAs === 'list' ? 'wide' : 'standard'}/>)}
+                </section>
+            ) : (
+                <div className="p-5 border-t border-black/10 font-bold text-xl">It's empty</div>
+            )}
         </article>
     )
 }
