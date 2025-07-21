@@ -15,35 +15,21 @@ const CardJob = ({job, variant = 'standard'}) => {
         '[&:nth-child(5n)>div:first-child]:bg-[#fbe2f3] ' +
         '[&:nth-child(6n)>div:first-child]:bg-[#eceff5]';
 
-    const jobTitle = variant === 'wide'
-        ? <>
-            <div className="shrink-0">
-                <img className="inline-block rounded-full float-right w-[44px] h-[44px] object-cover" src={job.employer.logo_url}
-                     alt={`${job.employer.name} Logo`}/>
-            </div>
-            <div className="flex-1 mt-2.5">
-                <div className="mb-1 text-xs font-bold text-primary">{job.employer.name}</div>
-                <h2 className="text-3xl font-medium text-primary">{job.title}</h2>
-            </div>
-        </>
-        :
-        <div>
-            <div className="mb-1 text-xs font-bold text-primary">{job.employer.name}</div>
-            <img className="inline-block rounded-full float-right w-[44px] h-[44px] object-cover" src={job.employer.logo_url}
-                 alt={`${job.employer.name} Logo`}/>
-            <h2 className="text-2xl font-medium text-primary break-words">{job.title}</h2>
-        </div>
-
     return (
         <Card className={className} variant={variant}>
             <CardHead>
                 <div
-                    className={variant === 'wide' ? 'flex flex-col-reverse justify-end items-center gap-2' : 'flex justify-between items-center'}>
+                    className={variant === 'wide' ? 'flex md:flex-col-reverse justify-between md:justify-end items-center gap-2' : 'flex justify-between items-center'}>
                     <div
                         className="bg-body-bg px-2 py-1 rounded-full text-sm font-medium text-primary">{moment.utc(job.created_at).local().format('MMM DD, YYYY')}</div>
                     <ToggleSaveJob jobId={job.id} />
                 </div>
-                {jobTitle}
+                <div className={variant === 'wide' && "flex-1"}>
+                    <div className="mb-1 text-xs font-bold text-primary">{job.employer.name}</div>
+                    <img className="inline-block rounded-full float-right w-[44px] h-[44px] object-cover" src={job.employer.logo_url}
+                         alt={`${job.employer.name} Logo`}/>
+                    <h2 className="text-2xl font-medium text-primary break-words">{job.title}</h2>
+                </div>
                 <div
                     className={variant === 'wide' ? 'flex flex-1 flex-wrap items-start space-x-2 space-y-2' : 'flex flex-wrap items-start mt-auto space-x-2 space-y-2'}>
                     {job.tags.map(tag => <Tag key={tag.id} tag={tag}/>)}

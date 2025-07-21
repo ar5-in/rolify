@@ -7,7 +7,7 @@ export default function ({className, children}) {
 
     if(variant === 'wide')
     {
-        classes.push('md:flex-3 md:flex-row items-start');
+        classes.push('md:flex-3 md:flex-row md:items-start md:space-x-5');
     }
 
     return <div className={classes.join(' ')}>{children}</div>
