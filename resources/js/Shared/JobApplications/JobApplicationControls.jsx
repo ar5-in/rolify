@@ -22,8 +22,8 @@ export default function JobApplicationControls({job}) {
     return (
         <>
             {hasApplied &&
-                <div className="p-5 border border-black/10 rounded-2xl">
-                    <h3 className="flex gap-2 mb-2 text-xl text-primary font-medium">
+                <div className="my-5 p-3 border border-black/10 rounded-2xl">
+                    <h3 className="flex gap-2 items-start justify-between md:justify-normal mb-2 text-lg md:text-xl text-primary font-medium">
                         Your Application
                         <span
                             className={`text-sm px-4 py-1 rounded-full ${applicationStatusClasses[application.status]}`}>
@@ -31,7 +31,7 @@ export default function JobApplicationControls({job}) {
                         </span>
                     </h3>
 
-                    <p>You applied to this job <span title={moment(application.created_at).format('MMM DD, YYYY hh:MM A')}>{moment(application.created_at).fromNow()}</span></p>
+                    <p className="text-sm">You applied to this job <span title={moment(application.created_at).format('MMM DD, YYYY hh:MM A')}>{moment(application.created_at).fromNow()}</span></p>
 
                     <CoverLetter application={application} onUpdate={() => router.get(`/jobs/${job.id}`)}/>
 
@@ -269,5 +269,9 @@ function ApplicationForm({jobId}) {
         );
     }
 
-    return (<Button label="Apply Now" type="button" onClick={handleApplyButtonClick}/>);
+    return (
+        <div className="flex flex-col md:flex-row">
+            <Button label="Apply Now" type="button" onClick={handleApplyButtonClick}/>
+        </div>
+    );
 }

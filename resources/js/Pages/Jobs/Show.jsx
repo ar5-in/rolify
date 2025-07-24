@@ -12,7 +12,7 @@ const Show = ({ job }) => {
         <Page heading={`${job.title} (${job.employer.name})`} topControls={<ToggleSaveJob jobId={job.id}/>}>
             <Tags tags={job.tags}/>
 
-            <p className="text-xl">
+            <p className="my-10 text-xl">
                 Based in <strong className="text-primary">{job.location}</strong>,
                 compensates <strong className="text-primary">{job.compensation}</strong>
             </p>
