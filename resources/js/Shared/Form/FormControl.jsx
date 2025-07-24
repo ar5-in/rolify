@@ -32,7 +32,7 @@ export default function FormControl({
     const hasAction = withAction !== undefined;
 
     const controlClasses = hasAction
-        ? `flex-1 px-3 py-1.5 border-1 ${hasError ? 'border-red-700' : 'border-slate-500'} rounded-l-lg text-primary text-md`
+        ? `min-w-0 flex-1 px-3 py-1.5 border-1 ${hasError ? 'border-red-700' : 'border-slate-500'} rounded-l-lg text-primary text-md`
         : `px-3 py-1.5 border-1 ${hasError ? 'border-red-700' : 'border-slate-500'} rounded-lg text-primary text-md`;
     const disabledControlClasses = `disabled:opacity-50`;
 

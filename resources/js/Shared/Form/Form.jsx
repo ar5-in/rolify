@@ -26,7 +26,7 @@ export default function Form({onSubmit, action = '', method = 'get', children, w
         <FormErrorsContext value={errors}>
             <FormDisabledContext value={disabled}>
                 <form action={action} method={method.toLowerCase() !== 'get' ? 'post' : 'get'}
-                      onSubmit={handleFormSubmit.bind(this)} className={wide === undefined ? 'w-100' : ''}>
+                      onSubmit={handleFormSubmit.bind(this)} className={wide === undefined ? 'md:w-100' : ''}>
                     {children}
                 </form>
             </FormDisabledContext>

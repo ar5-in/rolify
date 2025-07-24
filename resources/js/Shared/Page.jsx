@@ -1,11 +1,11 @@
 import PageHeading from "@/Shared/PageHeading.jsx";
 
 export default function Page({heading, children, topControls}) {
-    return <article>
+    return <article className="mx-5 my-10 md:my-12">
         <div className="flex items-center">
             {topControls}
             <PageHeading>{heading}</PageHeading>
         </div>
-        <section className="m-5 space-y-5">{children}</section>
+        <section>{children}</section>
     </article>
 }

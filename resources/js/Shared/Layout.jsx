@@ -10,11 +10,7 @@ export default function Layout({children}) {
         <SavedJobsProvider>
             <NotificationProvider>
                 <SiteHeader/>
-                <main>
-                    <section className="m-5 space-y-5">
-                        {children}
-                    </section>
-                </main>
+                <main>{children}</main>
                 <Notifications/>
             </NotificationProvider>
         </SavedJobsProvider>
