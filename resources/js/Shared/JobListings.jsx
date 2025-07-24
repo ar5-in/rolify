@@ -1,18 +1,20 @@
 import CardJob from "@/Shared/CardJob.jsx";
 
 export default function JobListings({jobs, title, displayAs = 'grid', withSorting, count}) {
-    const sortingControls = withSorting !== undefined ? <div>Sorted by Newest First</div> : '';
+    const sortingControls = withSorting !== undefined ? <div className="text-xs">Newest First</div> : null;
     const countComponent = count !== undefined
-        ? <span className="inline-flex px-4 py-1 border border-body-text rounded-full text-lg font-bold text-primary">{count}</span>
+        ? <span className="inline-flex px-3 md:px-4 py-1 border border-body-text rounded-full text-sm md:text-lg font-bold text-primary">{count}</span>
         : '';
 
     const titleComponent = title !== undefined
-        ?   <header className="flex justify-between mx-5 my-9">
-                <div className="flex space-x-4 items-center">
-                    <h1 className="text-3xl font-bold text-primary">{title}</h1>
+        ?   <header className="flex flex-col md:flex-row md:items-center justify-between mx-4 my-7 md:my-9">
+                <div className="flex space-x-4 items-start justify-between">
+                    <h1 className="text-xl md:text-3xl font-bold text-primary">{title}</h1>
                     {countComponent}
                 </div>
-                {sortingControls}
+                <div className="">
+                    {sortingControls}
+                </div>
             </header>
         : '';
 
@@ -21,7 +23,7 @@ export default function JobListings({jobs, title, displayAs = 'grid', withSortin
         : 'grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4';
 
     return (
-        <article>
+        <article className="my-10 md:my-12">
             {titleComponent}
             {jobs.length > 0 ? (
                 <section className={classes}>

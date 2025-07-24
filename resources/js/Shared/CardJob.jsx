@@ -26,9 +26,9 @@ const CardJob = ({job, variant = 'standard'}) => {
                 </div>
                 <div className={variant === 'wide' ? "flex-1" : null}>
                     <div className="mb-1 text-xs font-bold text-primary">{job.employer.name}</div>
-                    <img className="inline-block rounded-full float-right w-[44px] h-[44px] object-cover" src={job.employer.logo_url}
+                    <img className="inline-block rounded-full float-right w-[44px] h-[44px] object-cover ml-2" src={job.employer.logo_url}
                          alt={`${job.employer.name} Logo`}/>
-                    <h2 className="text-2xl font-medium text-primary break-words">{job.title}</h2>
+                    <h2 className="text-xl md:text-2xl font-medium text-primary break-words">{job.title}</h2>
                 </div>
                 <div
                     className={variant === 'wide' ? 'flex flex-1 flex-wrap items-start space-x-2 space-y-2' : 'flex flex-wrap items-start mt-auto space-x-2 space-y-2'}>
