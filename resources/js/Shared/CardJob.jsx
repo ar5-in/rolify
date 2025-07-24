@@ -6,7 +6,7 @@ import CardFooter from "@/Shared/CardFooter.jsx";
 import ToggleSaveJob from "@/Shared/SavedJobs/ToggleSaveJob.jsx";
 import moment from "moment";
 
-const CardJob = ({job, variant = 'standard'}) => {
+const CardJob = ({job, variant = 'standard', scrollable}) => {
     /* Alternate colors between cards */
     const className = '[&:nth-child(1n)>div:first-child]:bg-[#ffe1cb] ' +
         '[&:nth-child(2n)>div:first-child]:bg-[#d5f6ed] ' +
@@ -16,7 +16,7 @@ const CardJob = ({job, variant = 'standard'}) => {
         '[&:nth-child(6n)>div:first-child]:bg-[#eceff5]';
 
     return (
-        <Card className={className} variant={variant}>
+        <Card className={className} variant={variant} {...(scrollable !== undefined ? { scrollable }: {})}>
             <CardHead>
                 <div
                     className={variant === 'wide' ? 'flex md:flex-col-reverse justify-between md:justify-end items-center gap-2' : 'flex justify-between items-center'}>

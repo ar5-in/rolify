@@ -4,7 +4,7 @@ import {Head} from "@inertiajs/react";
 const Index = ({ jobs, featuredJobs }) => {
     return <>
         <Head title="Get Hired! Find your job" />
-        <JobListings title="Featured Jobs" jobs={featuredJobs} displayAs="list" />
+        <JobListings title="Featured Jobs" jobs={featuredJobs} displayAs="list" scrollable />
         <JobListings title="Recommended Jobs" jobs={jobs} displayAs="grid" withSorting count={jobs.length} />
     </>
 }
