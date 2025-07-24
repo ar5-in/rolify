@@ -9,21 +9,21 @@ export default function SiteNav({direction = 'horizontal', onNavLinkClick}) {
 
     const classes = direction === 'horizontal'
         ? "flex"
-        : "flex flex-col items-center";
+        : "flex flex-col items-center gap-2 w-full";
 
     const handleNavLinkClick = (e) => {
         onNavLinkClick && onNavLinkClick(e);
     }
 
     return <nav className={classes}>
-        <SiteNavLink href="/" active={component === 'Jobs/Index'} onClick={handleNavLinkClick}>Find Jobs</SiteNavLink>
+        <SiteNavLink variant={direction === 'vertical' ? 'alternate' : 'standard'} href="/" active={component === 'Jobs/Index'} onClick={handleNavLinkClick}>Find Jobs</SiteNavLink>
         {auth.user
             ? <>
-                <SiteNavLink href="/jobs/saved" active={component === 'Jobs/Saved/Index'} onClick={handleNavLinkClick}>Saved Jobs{savedJobs.length > 0 && ` (${savedJobs.length})`}</SiteNavLink>
-                {auth.user.can.createJobs ? <SiteNavLink href="/jobs/created" active={component === 'Jobs/Created/Index'} onClick={handleNavLinkClick}>My Jobs</SiteNavLink> : null}
-                {auth.user.can.createJobApplication ? <SiteNavLink href="/applications" active={component === 'JobApplications/Index'} onClick={handleNavLinkClick}>My Applications</SiteNavLink> : null}
+                <SiteNavLink variant={direction === 'vertical' ? 'alternate' : 'standard'} href="/jobs/saved" active={component === 'Jobs/Saved/Index'} onClick={handleNavLinkClick}>Saved Jobs{savedJobs.length > 0 && ` (${savedJobs.length})`}</SiteNavLink>
+                {auth.user.can.createJobs ? <SiteNavLink variant={direction === 'vertical' ? 'alternate' : 'standard'} href="/jobs/created" active={component === 'Jobs/Created/Index'} onClick={handleNavLinkClick}>My Jobs</SiteNavLink> : null}
+                {auth.user.can.createJobApplication ? <SiteNavLink variant={direction === 'vertical' ? 'alternate' : 'standard'} href="/applications" active={component === 'JobApplications/Index'} onClick={handleNavLinkClick}>My Applications</SiteNavLink> : null}
             </>
             : null}
-        <SiteNavLink href="/faq" active={component === 'FAQ'} onClick={handleNavLinkClick}>FAQ</SiteNavLink>
+        <SiteNavLink variant={direction === 'vertical' ? 'alternate' : 'standard'} href="/faq" active={component === 'FAQ'} onClick={handleNavLinkClick}>FAQ</SiteNavLink>
     </nav>
 }
