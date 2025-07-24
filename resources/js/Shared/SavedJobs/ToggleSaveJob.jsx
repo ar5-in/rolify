@@ -11,7 +11,7 @@ export default function ToggleSaveJob({jobId}) {
     const iconSave = new URL(`/resources/images/icon-save.svg`, import.meta.url).href;
 
     return (
-        <button className="cursor-pointer" onClick={() => toggleSaveJob(jobId)}>
+        <button className="shrink-0 cursor-pointer" onClick={() => toggleSaveJob(jobId)}>
             <img
                 className="inline-block w-[44px] p-2 bg-body-bg border border-black/20 hover:border-black/40 rounded-full"
                 src={isSaved ? iconSaved : iconSave}
