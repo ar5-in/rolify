@@ -51,8 +51,8 @@ jobs:
           chown -R deployer:www-data storage bootstrap/cache
           chmod -R 775 storage bootstrap/cache
           
-          # Restart services
-          sudo systemctl reload php8.3-fpm
-          sudo systemctl reload nginx
+          # Restart services (disabled temporarily)
+          # sudo systemctl reload php8.3-fpm
+          # sudo systemctl reload nginx
         EOF
       
