@@ -15,6 +15,11 @@ fi
 # Remove storage-init directory
 rm -rf /var/www/storage-init
 
+if [ "$(ls -A /var/www/frontend-assets)" ]; then
+    echo "Syncing frontend assets..."
+    rsync -av --delete /var/www/frontend-assets/ /var/www/public/build/
+fi
+
 # Run Laravel migrations
 # -----------------------------------------------------------
 # Ensure the database schema is up to date.

@@ -52,6 +52,15 @@ COPY . /var/www
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install --no-dev --optimize-autoloader --no-interaction --no-progress --prefer-dist
 
+### STAGE 1.5: Build Frontend Assets ###
+FROM node:20-alpine AS frontend
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY resources ./resources
+COPY vite.config.js .
+RUN npm run build
 
 # Stage 2: Production environment
 FROM php:8.4-fpm AS production
@@ -64,6 +73,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libzip-dev \
     libfcgi-bin \
     procps \
+    rsync \
     && apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Download and install php-fpm health check script
@@ -99,6 +109,9 @@ RUN sed -i '/\[www\]/a pm.status_path = /status' /usr/local/etc/php-fpm.d/zz-doc
 
 # Copy the application code and dependencies from the build stage
 COPY --from=builder /var/www /var/www
+
+# Copy production built assets to a temporary location. In entrypoint.sh, they will be synced to the volume
+COPY --from=frontend /app/public/build /var/www/frontend-assets
 
 # Set working directory
 WORKDIR /var/www
