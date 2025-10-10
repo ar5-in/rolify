@@ -24,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
         // TODO Research more on using this method
         Model::unguard();
 
+        /* Only serve via HTTPS on production */
+        if($this->app->environment('production'))
+        {
+            \URL::forceScheme('https');
+        }
+
         \Route::bind('jobWithDetails', function (string $value) {
             return Job::with('tags', 'employer')->findOrFail($value);
         });
