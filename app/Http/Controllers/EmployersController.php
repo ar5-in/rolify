@@ -11,12 +11,15 @@ class EmployersController extends Controller
 {
     public function index()
     {
-        throw new Exception("Not yet implemented");
+        Gate::authorize('view-any', Employer::class);
+        return response()
+            ->json(['entries' => auth()->user()->employers]);
     }
 
-    public function show(string $id)
+    public function show(Employer $employer)
     {
-        throw new Exception("Not yet implemented");
+        Gate::authorize('view', $employer);
+        return response()->json(['entry' => $employer]);
     }
 
     public function store(Request $request)

@@ -14,7 +14,7 @@ class EmployerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return $user->role->title === 'Recruiter';
     }
 
     /**
@@ -22,7 +22,7 @@ class EmployerPolicy
      */
     public function view(User $user, Employer $employer): bool
     {
-        return false;
+        return $employer->user()->is($user);
     }
 
     /**

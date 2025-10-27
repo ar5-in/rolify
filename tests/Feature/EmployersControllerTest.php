@@ -129,3 +129,71 @@ describe('Create Employer', function () {
         $response->assertForbidden();
     });
 });
+
+describe('Read Employers', function () {
+
+    it('returns empty entries key for authorized user with no employers', function () {
+        $response = actingAs($this->recruiter)->getJson(BASE_URL);
+
+        $response->assertOk()
+            ->assertJson([
+                'entries' => []
+            ]);
+    });
+
+    it('returns all entries for authorized user', function () {
+        $this->recruiter->employers()->saveMany(
+            Employer::factory(5)->create()
+        );
+
+        $response = actingAs($this->recruiter)->getJson(BASE_URL);
+
+        $response->assertOk()
+            ->assertJson([
+                'entries' => $this->recruiter->employers()->get()->toArray()
+            ]);
+    });
+
+    it('returns entry found for given ID', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $response = actingAs($this->recruiter)->getJson(url(BASE_URL, $employer->id));
+
+        $response->assertOk()
+            ->assertJson([
+                'entry' => $employer->toArray()
+            ]);
+    });
+
+    it('informs that no entry was found for given ID', function () {
+        $invalidId = 9999999;
+        $response = actingAs($this->recruiter)->getJson(url(BASE_URL, $invalidId));
+
+        $response->assertNotFound();
+    });
+
+    it('rejects the request if user is not logged in', function () {
+        $response = $this->getJson(url(BASE_URL));
+
+        $this->assertGuest();
+        $response->assertUnauthorized();
+    });
+
+    it('rejects the request if user is not a recruiter', function () {
+        $response = actingAs(User::factory()->create())->getJson(url(BASE_URL));
+
+        $this->assertAuthenticated();
+        $response->assertForbidden();
+    });
+
+    it('rejects the request if a user tries to access employer entry of a different user', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $response = actingAs(User::factory()->create())->getJson(url(BASE_URL, $employer->id));
+
+        $this->assertAuthenticated();
+        $response->assertForbidden();
+    });
+});
