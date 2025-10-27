@@ -1,21 +1,24 @@
 <?php
 
+use App\Models\Employer;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use function Pest\Laravel\actingAs;
 
-
 uses(RefreshDatabase::class);
+
+const BASE_URL = '/employers';
+
+beforeEach(function () {
+    $this->recruiter = User::factory()->create();
+    $this->recruiter->role()->associate(
+        Role::factory()->create(["title" => "Recruiter"])
+    );
+});
 
 // Employer -> Create
 describe('Create Employer', function () {
-    beforeEach(function () {
-        $this->recruiter = User::factory()->create();
-        $this->recruiter->role()->associate(
-            Role::factory()->create(["title" => "Recruiter"])
-        );
-    });
 
     it('creates and returns the entry', function () {
         $data = [
@@ -27,7 +30,7 @@ describe('Create Employer', function () {
         ];
 
         $response = actingAs($this->recruiter)->postJson(
-            '/employers',
+            BASE_URL,
             $data
         );
 
@@ -40,7 +43,7 @@ describe('Create Employer', function () {
 
     it('rejects the request if invalid data is submitted', function (array $data, array $errors) {
         $response = actingAs($this->recruiter)->postJson(
-            '/employers',
+            BASE_URL,
             $data
         );
 
@@ -100,7 +103,7 @@ describe('Create Employer', function () {
         ];
 
         $response = $this->postJson(
-            '/employers',
+            BASE_URL,
             $data
         );
 
@@ -118,7 +121,7 @@ describe('Create Employer', function () {
         ];
 
         $response = actingAs(User::factory()->create())->postJson(
-            '/employers',
+            BASE_URL,
             $data
         );
 
