@@ -197,3 +197,135 @@ describe('Read Employers', function () {
         $response->assertForbidden();
     });
 });
+
+describe('Update Employer', function () {
+    it('returns the updated employer entity for the given ID', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $dataToBeUpdated = [
+            'name' => 'Updated Employer',
+            'initials' => 'UE',
+            'logo_url' => 'http://logo-url',
+            'foreground' => '#234234',
+            'background' => '#dddddd'
+        ];
+
+        $response = actingAs($this->recruiter)->putJson(url(BASE_URL, $employer->id), $dataToBeUpdated);
+
+        $employer->refresh();
+
+        $response->assertOk()
+            ->assertJson(['entry' => $employer->toArray()]);
+    });
+
+    it('rejects if no employer was found for the given ID', function () {
+        $invalidId = 999999;
+        $dataToBeUpdated = [
+            'name' => 'Updated Employer',
+            'initials' => 'UE',
+            'logo_url' => 'http://logo-url',
+            'foreground' => '#234234',
+            'background' => '#dddddd'
+        ];
+
+        $response = actingAs($this->recruiter)->putJson(url(BASE_URL, $invalidId), $dataToBeUpdated);
+
+        $response->assertNotFound();
+    });
+
+    it('rejects if invalid data supplied', function (array $data, array $errors) {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $response = actingAs($this->recruiter)->putJson(url(BASE_URL, $employer->id), $data);
+
+        $employer->refresh();
+
+        $response->assertUnprocessable()
+            ->assertJsonValidationErrors($errors);
+    })->with([
+        [
+            [
+                'name' => '',
+                'initials' => 'UE',
+            ],
+            ['name']
+        ],
+        [
+            [
+                'initials' => '',
+                'logo_url' => 'http://logo-url',
+                'foreground' => '#234234',
+                'background' => '#dddddd'
+            ],
+            ['initials']
+        ],
+        [
+            [
+                'logo_url' => 'invalid-link'
+            ],
+            ['logo_url']
+        ],
+
+    ]);
+
+    it('rejects if the user is not logged in', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $dataToBeUpdated = [
+            'name' => 'Updated Employer',
+            'initials' => 'UE',
+            'logo_url' => 'http://logo-url',
+            'foreground' => '#234234',
+            'background' => '#dddddd'
+        ];
+
+        $response = $this->putJson(url(BASE_URL, $employer->id), $dataToBeUpdated);
+
+        $this->assertGuest();
+        $response->assertUnauthorized();
+    });
+
+    it('rejects if the user is not a recruiter', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $dataToBeUpdated = [
+            'name' => 'Updated Employer',
+            'initials' => 'UE',
+            'logo_url' => 'http://logo-url',
+            'foreground' => '#234234',
+            'background' => '#dddddd'
+        ];
+
+        $response = actingAs(User::factory()->create())->putJson(url(BASE_URL, $employer->id), $dataToBeUpdated);
+
+        $this->assertAuthenticated();
+        $response->assertForbidden();
+    });
+
+    it('rejects if the user tries to update employer of other recruiter', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $anotherRecruiter = User::factory()->create();
+        $anotherRecruiter->role()->associate(
+            Role::factory()->create(["title" => "Recruiter"])
+        );
+
+        $dataToBeUpdated = [
+            'name' => 'Updated Employer',
+            'initials' => 'UE',
+            'logo_url' => 'http://logo-url',
+            'foreground' => '#234234',
+            'background' => '#dddddd'
+        ];
+
+        $response = actingAs($anotherRecruiter)->putJson(url(BASE_URL, $employer->id), $dataToBeUpdated);
+
+        $this->assertAuthenticated();
+        $response->assertForbidden();
+    });
+});

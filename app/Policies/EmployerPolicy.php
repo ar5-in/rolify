@@ -38,7 +38,7 @@ class EmployerPolicy
      */
     public function update(User $user, Employer $employer): bool
     {
-        return false;
+        return $employer->user()->is($user);
     }
 
     /**

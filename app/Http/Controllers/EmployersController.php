@@ -40,9 +40,22 @@ class EmployersController extends Controller
         return response()->json(['entry' => $newEmployer], 201);
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Employer $employer)
     {
-        throw new Exception("Not yet implemented");
+        Gate::authorize('update', $employer);
+
+        $attributes = $request->validate([
+            'name'          => ['filled'],
+            'initials'      => ['filled'],
+            'foreground'    => ['filled', 'hex_color'],
+            'background'    => ['filled', 'hex_color'],
+            'logo_url'      => ['filled', 'url']
+        ]);
+
+        $employer->update($attributes);
+        $employer->refresh();
+
+        return response()->json(['entry' => $employer]);
     }
 
     public function destroy(string $id)
