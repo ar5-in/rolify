@@ -59,9 +59,9 @@ export default function Create({employers}) {
                         <FormControl label="Logo URL" name="logo_url" type="text"
                                      placeholder="https://urltologo" disabled={false} />
                         <FormControl label="Foreground" name="foreground" type="color"
-                                     placeholder="#ffffff" disabled={false} />
+                                     placeholder="#ffffff" disabled={false} initialValue={'#ffffff'} />
                         <FormControl label="Background" name="background" type="color"
-                                     placeholder="#000000" disabled={false} />
+                                     placeholder="#000000" disabled={false} initialValue={'#000000'} />
                     </FormGroup>
                     <FormActionGroup>
                         <FormAction label="Create Employer" />
