@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class Job extends Model
 {
@@ -37,5 +38,18 @@ class Job extends Model
             return null;
         }
         return $this->applications()->where('user_id', $user->id)->first();
+    }
+
+    public static function createdBy(User $user) : Collection
+    {
+        if($user->employers()->doesntExist())
+        {
+            return collect();
+        }
+
+        return Job::query()
+            ->with('employer', 'tags')
+            ->whereBelongsTo(auth()->user()->employers)
+            ->get();
     }
 }
