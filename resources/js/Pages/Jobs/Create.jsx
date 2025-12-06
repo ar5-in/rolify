@@ -32,9 +32,9 @@ export default function Create({employers}) {
     }
 
     const handleCreateEmployerResponse = (response) => {
-        if(response.data.employer)
+        if(response.data.entry)
         {
-            const newEmployer = {value: response.data.employer.id, label: response.data.employer.name};
+            const newEmployer = {value: response.data.entry.id, label: response.data.entry.name};
             setEmployerOptions([...employerOptions, newEmployer]);
             setIsAddingEmployer(false);
             setSelectedEmployerOption(newEmployer.value);
@@ -54,8 +54,14 @@ export default function Create({employers}) {
                     <FormGroup label="Create New Employer">
                         <FormControl label="Employer Name" name="name" type="text"
                                      placeholder="ACME Corp" disabled={false} />
+                        <FormControl label="Initials" name="initials" type="text"
+                                     placeholder="AC" disabled={false} />
                         <FormControl label="Logo URL" name="logo_url" type="text"
                                      placeholder="https://urltologo" disabled={false} />
+                        <FormControl label="Foreground" name="foreground" type="color"
+                                     placeholder="#ffffff" disabled={false} />
+                        <FormControl label="Background" name="background" type="color"
+                                     placeholder="#000000" disabled={false} />
                     </FormGroup>
                     <FormActionGroup>
                         <FormAction label="Create Employer" />
