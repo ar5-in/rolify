@@ -46,7 +46,7 @@ class EmployerPolicy
      */
     public function delete(User $user, Employer $employer): bool
     {
-        return false;
+        return $employer->user()->is($user);
     }
 
     /**

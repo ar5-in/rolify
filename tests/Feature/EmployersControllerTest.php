@@ -329,3 +329,57 @@ describe('Update Employer', function () {
         $response->assertForbidden();
     });
 });
+
+describe('Delete Employer', function () {
+    it('deletes the employer entry for the given ID', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $response = actingAs($this->recruiter)->deleteJson(url(BASE_URL, $employer->id));
+
+        $response->assertNoContent();
+    });
+
+    it('rejects if no employer was found for the given ID', function () {
+        $invalidId = 999999;
+
+        $response = actingAs($this->recruiter)->deleteJson(url(BASE_URL, $invalidId));
+
+        $response->assertNotFound();
+    });
+
+    it('rejects if the user is not logged in', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $response = $this->deleteJson(url(BASE_URL, $employer->id));
+
+        $this->assertGuest();
+        $response->assertUnauthorized();
+    });
+
+    it('rejects if the user is not a recruiter', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $response = actingAs(User::factory()->create())->deleteJson(url(BASE_URL, $employer->id));
+
+        $this->assertAuthenticated();
+        $response->assertForbidden();
+    });
+
+    it('rejects if the recruiter is deleting the entry they did not create', function () {
+        $employer = Employer::factory()->create();
+        $this->recruiter->employers()->save($employer);
+
+        $anotherRecruiter = User::factory()->create();
+        $anotherRecruiter->role()->associate(
+            Role::factory()->create(["title" => "Recruiter"])
+        );
+
+        $response = actingAs($anotherRecruiter)->deleteJson(url(BASE_URL, $employer->id));
+
+        $this->assertAuthenticated();
+        $response->assertForbidden();
+    });
+});

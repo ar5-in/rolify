@@ -58,8 +58,12 @@ class EmployersController extends Controller
         return response()->json(['entry' => $employer]);
     }
 
-    public function destroy(string $id)
+    public function destroy(Employer $employer)
     {
-        throw new Exception("Not yet implemented");
+        Gate::authorize('delete', $employer);
+
+        $employer->delete();
+
+        return response(status:204);
     }
 }
