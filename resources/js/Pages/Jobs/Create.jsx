@@ -7,11 +7,12 @@ import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.js
 import {useState} from "react";
 import FormGroup from "@/Shared/Form/FormGroup.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
+import Dialog from "../../Shared/Dialog.jsx";
+import ManageEmployers from "../../Shared/ManageEmployers/ManageEmployers.jsx";
 
 export default function Create({employers}) {
-    const [isAddingEmployer, setIsAddingEmployer] = useState(false);
+    const [isManageEmployersDialogOpen, setIsManageEmployersDialogOpen] = useState(false);
     const [employerOptions, setEmployerOptions] = useState(employers.map(employer => ({value: employer.id, label: employer.name})));
-    const [selectedEmployerOption, setSelectedEmployerOption] = useState(null);
     const addNotification = useAddNotification();
 
     const locationOptions = [
@@ -31,51 +32,23 @@ export default function Create({employers}) {
         addNotification({message: "There was an error while creating the job.", type: "error"});
     }
 
-    const handleCreateEmployerResponse = (response) => {
-        if(response.data.entry)
-        {
-            const newEmployer = {value: response.data.entry.id, label: response.data.entry.name};
-            setEmployerOptions([...employerOptions, newEmployer]);
-            setIsAddingEmployer(false);
-            setSelectedEmployerOption(newEmployer.value);
-            addNotification({message: `${newEmployer.label} added to the list`, type: "success"});
-        }
+    const openManageEmployersDialog = () => {
+        setIsManageEmployersDialogOpen(true);
     }
 
-    const showNewEmployerForm = () => {
-        setIsAddingEmployer(true);
+    const handleManageEmployersDialogClose = (employers) => {
+        setEmployerOptions(employers.map(employer => ({value: employer.id, label: employer.name})));
+        setIsManageEmployersDialogOpen(false);
     }
 
     return (
         <Page heading="Create New Job">
-
-            {isAddingEmployer && <>
-                <RequestForm wide action="/employers" method="post" onResolve={handleCreateEmployerResponse.bind(this)}>
-                    <FormGroup label="Create New Employer">
-                        <FormControl label="Employer Name" name="name" type="text"
-                                     placeholder="ACME Corp" disabled={false} />
-                        <FormControl label="Initials" name="initials" type="text"
-                                     placeholder="AC" disabled={false} />
-                        <FormControl label="Logo URL" name="logo_url" type="text"
-                                     placeholder="https://urltologo" disabled={false} />
-                        <FormControl label="Foreground" name="foreground" type="color"
-                                     placeholder="#ffffff" disabled={false} initialValue={'#ffffff'} />
-                        <FormControl label="Background" name="background" type="color"
-                                     placeholder="#000000" disabled={false} initialValue={'#000000'} />
-                    </FormGroup>
-                    <FormActionGroup>
-                        <FormAction label="Create Employer" />
-                        <FormAction type="button" label="Cancel" variant="alternate" onClick={() => setIsAddingEmployer(false)} />
-                    </FormActionGroup>
-                </RequestForm>
-            </>}
-
-            <RequestForm wide action="/jobs" method="post" disabled={isAddingEmployer} onResolve={handleCreateJobResponse.bind(this)}>
+            <RequestForm wide action="/jobs" method="post" onResolve={handleCreateJobResponse.bind(this)}>
 
                 <FormGroup label="Employer details">
                     <FormControl label="Select Employer" name="employer_id" type="select"
-                                 options={employerOptions} selectOption={selectedEmployerOption}
-                                 withAction actionLabel={isAddingEmployer ? 'Cancel' : 'Add New'} onAction={showNewEmployerForm} />
+                                 options={employerOptions}
+                                 withAction actionLabel={'Manage'} onAction={openManageEmployersDialog} />
                 </FormGroup>
 
                 <FormGroup label="Job Description">
@@ -103,6 +76,23 @@ export default function Create({employers}) {
                     }}/>
                 </FormActionGroup>
             </RequestForm>
+
+            {isManageEmployersDialogOpen ?
+                <ManageEmployersDialog onClose={handleManageEmployersDialogClose}/> : null}
         </Page>
     )
+}
+
+function ManageEmployersDialog({onClose}) {
+    const [employers, setEmployers] = useState([]);
+    const handleDialogClose = () => {
+        onClose(employers);
+    }
+
+    const updateEmployers = (employers) => {
+        setEmployers(employers);
+    }
+    return <Dialog title="Manage Employers" onClose={handleDialogClose}>
+        <ManageEmployers onUpdate={updateEmployers} />
+    </Dialog>
 }
