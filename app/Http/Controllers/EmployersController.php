@@ -31,7 +31,7 @@ class EmployersController extends Controller
             'initials' => ['required'],
             'foreground' => ['required', 'hex_color'],
             'background' => ['required', 'hex_color'],
-            'logo_url' => ['filled', 'url']
+            'logo_url' => ['nullable', 'url']
         ]);
 
         $newEmployer = auth()->user()->employers()
@@ -49,7 +49,7 @@ class EmployersController extends Controller
             'initials'      => ['filled'],
             'foreground'    => ['filled', 'hex_color'],
             'background'    => ['filled', 'hex_color'],
-            'logo_url'      => ['filled', 'url']
+            'logo_url'      => ['nullable', 'url']
         ]);
 
         $employer->update($attributes);
