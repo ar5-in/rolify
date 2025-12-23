@@ -46,7 +46,7 @@ class EmployerPolicy
      */
     public function delete(User $user, Employer $employer): bool
     {
-        return $employer->user()->is($user);
+        return $employer->user()->is($user) && $employer->jobs()->count() === 0;
     }
 
     /**
