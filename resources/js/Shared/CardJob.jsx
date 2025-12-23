@@ -26,8 +26,13 @@ const CardJob = ({job, variant = 'standard', scrollable}) => {
                 </div>
                 <div className={variant === 'wide' ? "flex-1" : null}>
                     <div className="mb-1 text-xs font-bold text-primary">{job.employer.name}</div>
-                    <img className="inline-block rounded-full float-right w-[44px] h-[44px] object-cover ml-2" src={job.employer.logo_url}
-                         alt={`${job.employer.name} Logo`}/>
+                    {job.employer.logo_url !== null ? <img className="mr-2 rounded-full float-right size-8 md:size-10 object-cover" src={job.employer.logo_url}
+                                                       alt={`${job.employer.name} Logo`}/> : <div
+                        className={`mr-2 size-8 md:size-10 flex justify-center items-center rounded-full text-xs md:text-sm font-bold float-right`}
+                        style={{
+                            backgroundColor: job.employer.background,
+                            color: job.employer.foreground
+                        }}>{job.employer.initials}</div>}
                     <h2 className="text-xl md:text-2xl font-medium text-primary break-words">{job.title}</h2>
                 </div>
                 <div
