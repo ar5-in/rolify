@@ -7,8 +7,7 @@ import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.js
 import {useState} from "react";
 import FormGroup from "@/Shared/Form/FormGroup.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
-import Dialog from "../../Shared/Dialog.jsx";
-import ManageEmployers from "../../Shared/ManageEmployers/ManageEmployers.jsx";
+import ManageEmployersDialog from "@/Shared/ManageEmployers/ManageEmployerDialog.jsx";
 
 export default function Create({employers}) {
     const [isManageEmployersDialogOpen, setIsManageEmployersDialogOpen] = useState(false);
@@ -81,18 +80,4 @@ export default function Create({employers}) {
                 <ManageEmployersDialog onClose={handleManageEmployersDialogClose}/> : null}
         </Page>
     )
-}
-
-function ManageEmployersDialog({onClose}) {
-    const [employers, setEmployers] = useState([]);
-    const handleDialogClose = () => {
-        onClose(employers);
-    }
-
-    const updateEmployers = (employers) => {
-        setEmployers(employers);
-    }
-    return <Dialog title="Manage Employers" onClose={handleDialogClose}>
-        <ManageEmployers onUpdate={updateEmployers} />
-    </Dialog>
 }

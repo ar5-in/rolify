@@ -8,8 +8,7 @@ import ConfirmButton from "@/Shared/ConfirmButton.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
 import {useState} from "react";
 import FormGroup from "@/Shared/Form/FormGroup.jsx";
-import Dialog from "../../Shared/Dialog.jsx";
-import ManageEmployers from "../../Shared/ManageEmployers/ManageEmployers.jsx";
+import ManageEmployersDialog from "@/Shared/ManageEmployers/ManageEmployerDialog.jsx";
 
 export default function Edit({job, employers}) {
     const [isManageEmployersDialogOpen, setIsManageEmployersDialogOpen] = useState(false);
@@ -84,18 +83,4 @@ export default function Edit({job, employers}) {
                 <ManageEmployersDialog onClose={handleManageEmployersDialogClose}/> : null}
         </Page>
     )
-}
-
-function ManageEmployersDialog({onClose}) {
-    const [employers, setEmployers] = useState([]);
-    const handleDialogClose = () => {
-        onClose(employers);
-    }
-
-    const updateEmployers = (employers) => {
-        setEmployers(employers);
-    }
-    return <Dialog title="Manage Employers" onClose={handleDialogClose}>
-        <ManageEmployers onUpdate={updateEmployers} />
-    </Dialog>
 }
