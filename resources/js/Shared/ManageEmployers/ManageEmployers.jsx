@@ -61,7 +61,7 @@ export default function ManageEmployers({onUpdate}) {
     return (
         <div className={``}>
             {isLoading ? <div className={`p-8 flex justify-center`}>
-                <ProgressSpinner />
+                    <ProgressSpinner/>
                 </div>
                 : (!isEditing
                     ? <div>
@@ -74,7 +74,8 @@ export default function ManageEmployers({onUpdate}) {
                             }}/>
                         </div>
                     </div>
-                    : <EmployerForm employer={selectedEmployer} onUpdate={handleUpdate} onCreate={handleCreate} onDelete={handleDelete}
+                    : <EmployerForm employer={selectedEmployer} onUpdate={handleUpdate} onCreate={handleCreate}
+                                    onDelete={handleDelete}
                                     onAbort={() => setIsEditing(false)}/>)}
         </div>
     );
@@ -85,7 +86,17 @@ function EmployersList({employers, onSelectEmployer}) {
         <ul className={`flex flex-col`}>
             {employers.map(employer => <li key={employer.id}
                                            className={`py-2 px-4 pr-2 flex items-center justify-between border-b border-b-black/10`}>
-                {employer.name}
+                <div className={`flex items-center`}>
+                    {employer.logo_url !== null ?
+                        <img className="mr-2 rounded-full float-right size-8 object-cover" src={employer.logo_url}
+                             alt={`${employer.name} Logo`}/> : <div
+                            className={`mr-2 size-8 flex justify-center items-center rounded-full text-xs font-bold`}
+                            style={{
+                                backgroundColor: employer.background,
+                                color: employer.foreground
+                            }}>{employer.initials}</div>}
+                    {employer.name}
+                </div>
                 <Button label={'Edit'} variant="alternate" onClick={() => onSelectEmployer(employer)}/>
             </li>)}
         </ul>
@@ -154,7 +165,8 @@ function EmployerForm({employer, onCreate, onUpdate, onDelete, onAbort}) {
                 <FormActionGroup>
                     <div className={`mr-auto`}>
                         {deleteOptionVisible ? <ConfirmButton variant="danger" label="Delete" message="Sure?"
-                                       onConfirm={deleteEmployer} disabled={isFormDisabled}/> : null}
+                                                              onConfirm={deleteEmployer}
+                                                              disabled={isFormDisabled}/> : null}
                     </div>
                     <FormAction label={btnSubmitLabel}/>
                     <FormAction type="button" label="Cancel" variant="alternate"
