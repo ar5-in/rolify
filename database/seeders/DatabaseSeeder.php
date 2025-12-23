@@ -34,7 +34,12 @@ class DatabaseSeeder extends Seeder
         Job::factory(20)
             ->recycle($employers)
             ->hasAttached($tags)
-            ->sequence(['is_featured' => true], ['is_featured' => false], ['is_featured' => false])
+            ->sequence(
+                ['is_featured' => fake()->randomElement([true, false])],
+                ['is_featured' => fake()->randomElement([true, false])],
+                ['is_featured' => fake()->randomElement([true, false])],
+                ['is_featured' => fake()->randomElement([true, false])],
+            )
             ->create();
 
         // Create Users whose role is to be a candidate
