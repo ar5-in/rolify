@@ -4,8 +4,8 @@ import {Head} from "@inertiajs/react";
 const Index = ({ jobs, featuredJobs }) => {
     return <>
         <Head title="Get Hired! Find your job on Rolify" />
-        {featuredJobs.length > 0 ? <JobListings title="Featured Jobs" jobs={featuredJobs} displayAs="list" scrollable /> : null}
-        <JobListings title="Recommended Jobs" jobs={jobs} displayAs="grid" withSorting count={jobs.length} />
+        {featuredJobs.data.length > 0 ? <JobListings title="Featured Jobs" jobs={featuredJobs.data} displayAs="list" scrollable /> : null}
+        <JobListings title="Recommended Jobs" jobs={jobs.data} displayAs="grid" withSorting paginationMeta={jobs.meta} count={jobs.meta.total} />
     </>
 }
 

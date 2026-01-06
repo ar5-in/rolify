@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\JobResource;
 use App\Models\Tag;
 use Inertia\Inertia;
 
@@ -11,10 +12,10 @@ class TagsController extends Controller
     {
         $jobs = $tag->jobs()
             ->with('employer', 'tags')
-            ->get();
+            ->paginate(3);
 
         return Inertia::render('Tags/Index')
             ->with('tag', $tag)
-            ->with('jobs', $jobs);
+            ->with('jobs', JobResource::collection($jobs));
     }
 }
