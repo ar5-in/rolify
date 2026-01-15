@@ -86,7 +86,7 @@ export default function SiteHeader () {
                 {userDropDown}
             </div>
             {/* /Mobile Nav */}
-            <div className="hidden md:flex flex-1 items-stretch justify-between">
+            <div className="hidden md:flex flex-1 items-stretch justify-between max-w-[102rem] mx-auto">
                 <div className="flex items-stretch">
                     <SiteLogo/>
                     <SiteNav/>

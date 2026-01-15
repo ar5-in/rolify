@@ -13,7 +13,7 @@ export default function ToggleSaveJob({jobId}) {
     return (
         <button className="shrink-0 cursor-pointer" onClick={() => toggleSaveJob(jobId)}>
             <img
-                className="inline-block w-[44px] p-2 bg-body-bg border border-black/20 hover:border-black/40 rounded-full"
+                className="inline-block w-[44px] p-2 bg-body-bg border border-black/20 hover:border-black/40 rounded-full transition-colors duration-300"
                 src={isSaved ? iconSaved : iconSave}
                 alt="Save Job"/>
         </button>

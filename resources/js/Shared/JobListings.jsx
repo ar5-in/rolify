@@ -25,7 +25,7 @@ export default function JobListings({jobs, title, displayAs = 'grid', withSortin
         : 'grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4';
 
     return (
-        <article className="mx-5 my-10 md:my-12">
+        <article className="mx-auto my-10 px-5 md:px-[3dvw] md:my-12 max-w-[96rem]">
             {titleComponent}
             {jobs.length > 0 ? (
                 <section className={classes}>
