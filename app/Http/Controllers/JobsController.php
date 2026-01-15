@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\JobResource;
 use App\Models\Employer;
 use App\Models\Job;
 use App\Models\Tag;
@@ -14,7 +15,7 @@ class JobsController extends Controller
     {
         $jobs = \App\Models\Job::with('employer', 'tags')
             ->latest()
-            ->get();
+            ->paginate(8);
 
         $featuredJobs = \App\Models\Job::with('employer', 'tags')
             ->where('is_featured', true)
@@ -23,28 +24,8 @@ class JobsController extends Controller
             ->get();
 
         return Inertia::render('Jobs/Index', [
-            'jobs' => $jobs->map(function($job) {
-                return array_merge($job->toArray(), [
-                    'authUser' => [
-                        'can' => [
-                            'view' => auth()->user() && auth()->user()->can('view', $job),
-                            'update' => auth()->user() && auth()->user()->can('update', $job),
-                            'delete' => auth()->user() && auth()->user()->can('delete', $job),
-                        ]
-                    ]
-                ]);
-            }),
-            'featuredJobs' => $featuredJobs->map(function($job) {
-                return array_merge($job->toArray(), [
-                    'authUser' => [
-                        'can' => [
-                            'view' => auth()->user() && auth()->user()->can('view', $job),
-                            'update' => auth()->user() && auth()->user()->can('update', $job),
-                            'delete' => auth()->user() && auth()->user()->can('delete', $job),
-                        ]
-                    ]
-                ]);
-            })
+            'jobs' => JobResource::collection($jobs),
+            'featuredJobs' => JobResource::collection($featuredJobs)
         ]);
     }
 
