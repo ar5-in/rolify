@@ -48,7 +48,7 @@ function getPageRange(current, last, size) {
 }
 
 function PaginationLink({url, label, active = false, hideOnMobile = false}) {
-    const classes = `${hideOnMobile ? 'hidden md:inline-block' : 'inline-block'} max-md:flex-1 p-2 px-5 rounded-full text-sm ${active ? 'bg-primary text-body-bg' : 'text-primary bg-black/5 hover:bg-black/10'}`;
+    const classes = `${hideOnMobile ? 'hidden md:inline-block' : 'inline-block'} max-md:flex-1 p-2 px-5 rounded-full text-sm ${active ? 'bg-primary text-body-bg' : 'text-primary bg-black/5 hover:bg-black/10'} transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5`;
     return url !== null
         ? <Link preserveScroll
                 className={classes}

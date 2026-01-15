@@ -4,6 +4,7 @@ import {Head, Link, usePage} from "@inertiajs/react";
 import ToggleSaveJob from "@/Shared/SavedJobs/ToggleSaveJob.jsx";
 import JobApplicationControls from "@/Shared/JobApplications/JobApplicationControls.jsx";
 import JobControls from "@/Shared/Jobs/JobControls.jsx";
+import Button from "../../Shared/Button.jsx";
 
 const Show = ({job}) => {
     const {auth} = usePage().props;
@@ -22,8 +23,7 @@ const Show = ({job}) => {
                 {auth.user !== null ? <>
                     <JobControls job={job}/>
                     <JobApplicationControls job={job}/>
-                </> : <Link className="inline-block bg-primary text-body-bg px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer"
-                            href={`/login`}>Login to Apply</Link>}
+                </> : <Button type="link" href={`/login`} label="Login to Apply" />}
 
             </Page>
         </>
