@@ -1,0 +1,28 @@
+name: Build Images
+run-name: ${{ github.actor }} building images
+
+# trigger manually
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v3
+        
+      # Build Image
+      - name: Build Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/common/php-fpm/Dockerfile
+          push: false
+          tags: hub.ar5.in/rolify/app:latest
+  
