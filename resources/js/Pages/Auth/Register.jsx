@@ -35,7 +35,7 @@ export default function Register({roles}) {
                             <FormControl label="Confirm Password" name="password_confirmation" type="password"
                                          placeholder="Confirm Password"/>
                             <FormControl label="I agree to the terms" id="wants_newsletter_subscription-1"
-                                         name="has_agreed" type="checkbox"
+                                         name="has_agreed" type="checkbox" initialValue={`1`}
                             />
                         </div>
                         <div className={`px-3 py-5`}>
