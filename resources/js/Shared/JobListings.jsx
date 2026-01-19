@@ -1,7 +1,9 @@
 import CardJob from "@/Shared/CardJob.jsx";
 import Pagination from "./Pagination.jsx";
+import {useRef} from "react";
 
 export default function JobListings({jobs, title, displayAs = 'grid', withSorting, paginationMeta, scrollable, count}) {
+    const refContainerEl = useRef(null);
     const sortingControls = withSorting !== undefined ? <div className="text-xs">Newest First</div> : null;
     const countComponent = count !== undefined
         ? <span
@@ -25,7 +27,7 @@ export default function JobListings({jobs, title, displayAs = 'grid', withSortin
         : 'grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4';
 
     return (
-        <article className="mx-auto my-10 px-5 md:px-[3dvw] md:my-12 max-w-[96rem]">
+        <article ref={refContainerEl} className="mx-auto my-10 px-5 md:px-[3dvw] md:my-12 max-w-[96rem] scroll-m-[calc(62px+calc(var(--spacing)*7))] md:scroll-m-[calc(88px+calc(var(--spacing)*9))]">
             {titleComponent}
             {jobs.length > 0 ? (
                 <section className={classes}>
@@ -36,7 +38,7 @@ export default function JobListings({jobs, title, displayAs = 'grid', withSortin
                 <div className="p-5 border-t border-black/10 font-bold text-xl">It's empty</div>
             )}
             {paginationMeta !== undefined ?
-                <Pagination current={paginationMeta.current_page} lastPage={paginationMeta.last_page}
+                <Pagination container={refContainerEl} current={paginationMeta.current_page} lastPage={paginationMeta.last_page}
                             uri={paginationMeta.path} /> : null}
         </article>
     )
