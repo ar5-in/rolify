@@ -1,6 +1,5 @@
-import rolifyLogo from '@/../images/rolify_logo.svg';
-
 export default  function SiteFooter() {
+    const rolifyLogo = new URL(`/resources/images/rolify_logo.svg`, import.meta.url).href;
     return (
         <>
             <div className={`mx-20 my-20 flex flex-col gap-5 items-center`}>
