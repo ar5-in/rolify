@@ -15,7 +15,7 @@ export default function Register({roles}) {
     return (
         <div className={`mx-auto max-w-xl`}>
             <Page heading="Register">
-                <RequestForm action="/register" method="post" onResolve={handleResolve.bind(this)}>
+                <RequestForm wide action="/register" method="post" onResolve={handleResolve.bind(this)}>
                     <Card>
                         <div className={`p-3 bg-transparent border border-black/10 rounded-xl`}>
                             <FormControl label="Choose a Role" name="role_id"
