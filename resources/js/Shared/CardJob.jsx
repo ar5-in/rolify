@@ -46,7 +46,7 @@ const CardJob = ({job, variant = 'standard', scrollable}) => {
                     <div className="text-sm">{job.location}</div>
                 </div>
                 <Link className="inline-block bg-primary text-body-bg px-6 py-2 rounded-full text-lg font-bold transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5"
-                      href={`/jobs/${job.id}`} preserveScroll>Details</Link>
+                      href={`/jobs/${job.id}`}>Details</Link>
             </CardFooter>
         </Card>
     );
