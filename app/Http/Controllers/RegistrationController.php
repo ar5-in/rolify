@@ -24,7 +24,10 @@ class RegistrationController extends Controller
             'name' => ['required'],
             'email' => ['required', 'email', 'unique:users'],
             'role_id' => ['required', 'numeric', 'exists:roles,id'],
-            'password' => ['required', Password::min(6), 'confirmed']
+            'password' => ['required', Password::min(6), 'confirmed'],
+            'has_agreed' => ['required', 'accepted', 'exclude'],
+        ], [
+            'has_agreed' => 'You must agree to the terms'
         ]);
 
         $user = User::create($attributes);
