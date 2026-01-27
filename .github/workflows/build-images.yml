@@ -6,23 +6,38 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test-ssh:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Setup Docker buildx
-        uses: docker/setup-buildx-action@v3
-        
-      # Build Image
-      - name: Build Image
-        uses: docker/build-push-action@v5
+      - name: Test SSH to server
+        uses: appleboy/ssh-action@v1.0.3[web:2][page:0]
         with:
-          context: .
-          file: ./docker/common/php-fpm/Dockerfile
-          push: false
-          tags: hub.ar5.in/rolify/app:latest
+          host: ${{ secrets.SERVER_HOST }}  # e.g., your VPS IP or hostname
+          username: ${{ secrets.SERVER_USER }}  # e.g., root or your Debian user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key content
+          port: 22
+          script: |
+            echo "SSH connection successful!"
+            whoami
+            hostname
+            uptime
+  # build:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     # Checkout
+  #     - name: Checkout repo
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup Docker buildx
+  #       uses: docker/setup-buildx-action@v3
+        
+  #     # Build Image
+  #     - name: Build Image
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: .
+  #         file: ./docker/common/php-fpm/Dockerfile
+  #         push: false
+  #         tags: hub.ar5.in/rolify/app:latest
   
