@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test SSH to server
-        uses: appleboy/ssh-action@v1.0.3[web:2][page:0]
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.SERVER_HOST }}  # e.g., your VPS IP or hostname
           username: ${{ secrets.SERVER_USER }}  # e.g., root or your Debian user
