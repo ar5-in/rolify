@@ -31,7 +31,7 @@ jobs:
           context: .
           file: ./docker/common/php-fpm/Dockerfile
           push: true
-          tags: hub.ar5.in/rolify/app:0.1.7-test
+          tags: hub.ar5.in/rolify/app:${{ github.sha }}
           target: production
           
       # Build Image
@@ -41,7 +41,7 @@ jobs:
           context: .
           file: ./docker/staging/nginx/Dockerfile
           push: true
-          tags: hub.ar5.in/rolify/web:0.1.7-test
+          tags: hub.ar5.in/rolify/web:${{ github.sha }}
   
   deploy:
     runs-on: ubuntu-latest
@@ -55,5 +55,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key content
           port: 22
           script: |
-            export IMAGE_TAG=0.1.7-test
+            export IMAGE_TAG=${{ github.sha }}
             docker stack deploy -c ${{ secrets.STAGING_PATH }}/docker-stack.yaml --with-registry-auth -d rolify_stg
