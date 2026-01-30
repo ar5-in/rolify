@@ -17,10 +17,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}  # SSH private key content
           port: 22
           script: |
-            echo "SSH connection successful!"
-            whoami
-            hostname
-            uptime
+            export IMAGE_TAG=0.1.7
+            docker stack deploy -c ${{ secrets.STAGING_PATH }}/docker-stack.yaml --with-registry-auth -d rolify_stg
   # build:
   #   runs-on: ubuntu-latest
 
