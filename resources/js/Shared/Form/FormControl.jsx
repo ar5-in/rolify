@@ -104,7 +104,7 @@ export default function FormControl({
     }
 
     return (
-        <div className="flex flex-col my-3 mb-5">
+        <div className="flex flex-col my-3 mb-5 first:mt-0">
             {showLabel && <Label label={label} id={id}/>}
             {hasAction
                 ? <ActionWrapper label={actionLabel} onClick={onAction} disabled={actionDisabled}>{control}</ActionWrapper>

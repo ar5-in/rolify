@@ -8,6 +8,7 @@ import {useState} from "react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 import ConfirmButton from "@/Shared/ConfirmButton.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
+import ToggleSaveJob from "../SavedJobs/ToggleSaveJob.jsx";
 
 export default function JobApplicationControls({job}) {
     const {auth} = usePage().props;
@@ -270,8 +271,9 @@ function ApplicationForm({jobId}) {
     }
 
     return (
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row gap-2">
             <Button label="Apply Now" type="button" onClick={handleApplyButtonClick}/>
+            <ToggleSaveJob label="Save Job" jobId={jobId}/>
         </div>
     );
 }

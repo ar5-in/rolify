@@ -5,13 +5,14 @@ export default function Button({ label = 'Button', type, variant, href, disabled
     const getClasses = (variant) => {
         const classes = {
             'default': 'inline-block bg-primary text-body-bg px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer',
-            'alternate': 'inline-block text-primary hover:bg-black/10 px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer transition-colors duration-300',
-            'danger': 'inline-block ml-auto text-red-600 hover:bg-black/10 px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer transition-colors duration-300'
+            'alternate': 'inline-block text-primary hover:bg-black/10 px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer',
+            'danger': 'inline-block ml-auto text-red-600 hover:bg-black/10 px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer'
         }
 
         const disabledClasses = ' disabled:opacity-50';
+        const motionClasses = ' transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5';
 
-        return (classes[variant] ?? classes['default']) + disabledClasses;
+        return (classes[variant] ?? classes['default']) + disabledClasses + motionClasses;
     }
 
     if(type === 'link')

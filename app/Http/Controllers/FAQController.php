@@ -11,9 +11,15 @@ class FAQController extends Controller
     {
         return Inertia::render('FAQ', [
             'heading' => 'Frequently Asked Questions',
-            'questions' => [
-            'Here is the first question, is it?',
-            'Do you want another question?'
+            'items' => [
+                [
+                    'question' => 'Are real jobs listed on Rolify?',
+                    'answer' => 'No, jobs on this platform are not real and are just placeholders to test the functionality of the site.'
+                ],
+                [
+                    'question' => 'What stack is used to build this platform?',
+                    'answer' => 'Rolify is built using Laravel with Inertia.js and React.'
+                ],
             ]
         ]);
     }
