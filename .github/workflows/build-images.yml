@@ -33,8 +33,9 @@ jobs:
           push: true
           tags: hub.ar5.in/rolify/app:0.1.7-test
   
-  test-ssh:
+  deploy:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Test SSH to server
         uses: appleboy/ssh-action@v1
