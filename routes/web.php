@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CreatedJobsController;
+use App\Http\Controllers\EmployersController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\JobsController;
@@ -40,7 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/applications/{jobApplication}', [JobApplicationController::class, 'destroy'])->can('delete', 'jobApplication');
     Route::get('/applications', [JobApplicationController::class, 'index']);
 
-    Route::post('/employers', [\App\Http\Controllers\EmployersController::class, 'store']);
+    Route::apiResource('employers', EmployersController::class);
 
     Route::delete('/logout', [\App\Http\Controllers\AuthController::class, 'destroy']);
 });

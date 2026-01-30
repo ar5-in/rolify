@@ -1,21 +1,23 @@
 import CardJob from "@/Shared/CardJob.jsx";
+import Pagination from "./Pagination.jsx";
 
-export default function JobListings({jobs, title, displayAs = 'grid', withSorting, scrollable, count}) {
+export default function JobListings({jobs, title, displayAs = 'grid', withSorting, paginationMeta, scrollable, count}) {
     const sortingControls = withSorting !== undefined ? <div className="text-xs">Newest First</div> : null;
     const countComponent = count !== undefined
-        ? <span className="inline-flex px-3 md:px-4 py-1 border border-body-text rounded-full text-sm md:text-lg font-bold text-primary">{count}</span>
+        ? <span
+            className="inline-flex px-3 md:px-4 py-1 border border-body-text rounded-full text-sm md:text-lg font-bold text-primary">{count}</span>
         : '';
 
     const titleComponent = title !== undefined
-        ?   <header className="flex flex-col md:flex-row md:items-center justify-between mx-4 my-7 md:my-9">
-                <div className="flex space-x-4 items-start justify-between">
-                    <h1 className="text-xl md:text-3xl font-bold text-primary">{title}</h1>
-                    {countComponent}
-                </div>
-                <div className="">
-                    {sortingControls}
-                </div>
-            </header>
+        ? <header className="flex flex-col md:flex-row md:items-center justify-between mx-4 my-7 md:my-9">
+            <div className="flex space-x-4 items-start justify-between">
+                <h1 className="text-xl md:text-3xl font-bold text-primary">{title}</h1>
+                {countComponent}
+            </div>
+            <div className="">
+                {sortingControls}
+            </div>
+        </header>
         : '';
 
     const classes = displayAs === 'list'
@@ -28,11 +30,14 @@ export default function JobListings({jobs, title, displayAs = 'grid', withSortin
             {jobs.length > 0 ? (
                 <section className={classes}>
                     {jobs.map(job => <CardJob key={job.id} job={job}
-                    variant={displayAs === 'list' ? 'wide' : 'standard'} {...scrollable !== undefined ? {scrollable} : {}} />)}
+                                              variant={displayAs === 'list' ? 'wide' : 'standard'} {...scrollable !== undefined ? {scrollable} : {}} />)}
                 </section>
             ) : (
                 <div className="p-5 border-t border-black/10 font-bold text-xl">It's empty</div>
             )}
+            {paginationMeta !== undefined ?
+                <Pagination current={paginationMeta.current_page} lastPage={paginationMeta.last_page}
+                            uri={paginationMeta.path} /> : null}
         </article>
     )
 }

@@ -8,11 +8,11 @@ import ConfirmButton from "@/Shared/ConfirmButton.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
 import {useState} from "react";
 import FormGroup from "@/Shared/Form/FormGroup.jsx";
+import ManageEmployersDialog from "@/Shared/ManageEmployers/ManageEmployerDialog.jsx";
 
 export default function Edit({job, employers}) {
-    const [isAddingEmployer, setIsAddingEmployer] = useState(false);
+    const [isManageEmployersDialogOpen, setIsManageEmployersDialogOpen] = useState(false);
     const [employerOptions, setEmployerOptions] = useState(employers.map(employer => ({value: employer.id, label: employer.name})));
-    const [selectedEmployerOption, setSelectedEmployerOption] = useState(job.employer_id);
     const addNotification = useAddNotification();
 
     const locationOptions = [
@@ -26,19 +26,13 @@ export default function Edit({job, employers}) {
         router.get(`/jobs/${job.id}`);
     }
 
-    const handleCreateEmployerResponse = (response) => {
-        if(response.data.employer)
-        {
-            const newEmployer = {value: response.data.employer.id, label: response.data.employer.name};
-            setEmployerOptions([...employerOptions, newEmployer]);
-            setIsAddingEmployer(false);
-            setSelectedEmployerOption(newEmployer.value);
-            addNotification({message: `${newEmployer.label} added to the list`, type: "success"});
-        }
+    const openManageEmployersDialog = () => {
+        setIsManageEmployersDialogOpen(true);
     }
 
-    const showNewEmployerForm = () => {
-        setIsAddingEmployer(!isAddingEmployer);
+    const handleManageEmployersDialogClose = (employers) => {
+        setEmployerOptions(employers.map(employer => ({value: employer.id, label: employer.name})));
+        setIsManageEmployersDialogOpen(false);
     }
 
     const handleDeleteJobClick = () => {
@@ -48,28 +42,12 @@ export default function Edit({job, employers}) {
 
     return (
         <Page heading={`Edit Job #${job.id}`}>
-
-            {isAddingEmployer && <>
-                <RequestForm wide action="/employers" method="post" onResolve={handleCreateEmployerResponse.bind(this)}>
-                    <FormGroup label="Create New Employer">
-                        <FormControl label="Employer Name" name="name" type="text"
-                                     placeholder="ACME Corp" disabled={false} />
-                        <FormControl label="Logo URL" name="logo_url" type="text"
-                                     placeholder="https://urltologo" disabled={false} />
-                    </FormGroup>
-                    <FormActionGroup>
-                        <FormAction label="Create Employer" />
-                        <FormAction type="button" label="Cancel" variant="alternate" onClick={() => setIsAddingEmployer(false)} />
-                    </FormActionGroup>
-                </RequestForm>
-            </>}
-
-            <RequestForm wide action={`/jobs/${job.id}`} method="patch" disabled={isAddingEmployer} onResolve={handleUpdateJobResponse.bind(this)}>
+            <RequestForm wide action={`/jobs/${job.id}`} method="patch" onResolve={handleUpdateJobResponse.bind(this)}>
 
                 <FormGroup label="Employer details">
                     <FormControl label="Select Employer" name="employer_id" type="select"
-                                 options={employerOptions} selectOption={selectedEmployerOption} initialValue={job.employer_id}
-                                 withAction actionLabel={isAddingEmployer ? 'Cancel' : 'Add New'} onAction={showNewEmployerForm} />
+                                 options={employerOptions} initialValue={job.employer_id}
+                                 withAction actionLabel={'Manage'} onAction={openManageEmployersDialog} />
                 </FormGroup>
 
                 <FormGroup label="Job Description">
@@ -97,9 +75,12 @@ export default function Edit({job, employers}) {
                     }}/>
 
                     <ConfirmButton variant="danger" label="Delete Job" message="Permanently delete this job?"
-                                   onConfirm={handleDeleteJobClick} disabled={isAddingEmployer} />
+                                   onConfirm={handleDeleteJobClick} />
                 </FormActionGroup>
             </RequestForm>
+
+            {isManageEmployersDialogOpen ?
+                <ManageEmployersDialog onClose={handleManageEmployersDialogClose}/> : null}
         </Page>
     )
 }

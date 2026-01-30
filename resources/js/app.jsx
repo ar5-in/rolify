@@ -10,7 +10,7 @@ import { createRoot } from 'react-dom/client';
 import Layout from './Shared/Layout';
 
 createInertiaApp({
-    title: title => `${title} - Pixel Position`,
+    title: title => `${title} - Rolify`,
     resolve: async (name) => {
         const pages = import.meta.glob('./Pages/**/*.jsx');
         const page = pages[`./Pages/${name}.jsx`];

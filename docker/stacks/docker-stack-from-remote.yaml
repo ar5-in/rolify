@@ -1,0 +1,112 @@
+services:
+  web:
+    image: hub.ar5.in/rolify/web:0.1.3
+    volumes:
+      - rolify-storage:/var/www/storage:ro
+      - rolify-public-assets:/var/www/public/build:ro
+    networks:
+      - traefik_traefik_proxy
+      - rolify
+    depends_on:
+      - app
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.rolify.rule=Host(`stg-rolify.ar5.in`)"
+        - "traefik.http.routers.rolify.entrypoints=websecure"
+        - "traefik.http.routers.rolify.tls.certresolver=letsencrypt"
+        - "traefik.http.services.rolify.loadbalancer.server.port=80"
+        - "traefik.http.middlewares.https-redirect.headers.customrequestheaders.X-Forwarded-Proto=https"
+
+  app:
+    image: hub.ar5.in/rolify/app:0.1.3
+    volumes:
+      - rolify-public-assets:/var/www/public/build
+      - rolify-storage:/var/www/storage
+    env_file:
+      - .env
+    secrets:
+      - rolify_postgres_db
+      - rolify_postgres_user
+      - rolify_postgres_password
+    environment:
+      - POSTGRES_DB_FILE=/run/secrets/rolify_postgres_db
+      - POSTGRES_USER_FILE=/run/secrets/rolify_postgres_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+    networks:
+      - rolify
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm-healthcheck || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - postgres
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    # entrypoint: ["/bin/sh", "-c", "export DB_PASSWORD=$(cat /run/secrets/db_password) && exec php-fpm"]
+
+  postgres:
+    image: postgres:16
+    user: postgres
+    secrets:
+      - rolify_postgres_db
+      - rolify_postgres_user
+      - rolify_postgres_password
+    environment:
+      - POSTGRES_DB_FILE=/run/secrets/rolify_postgres_db
+      - POSTGRES_USER_FILE=/run/secrets/rolify_postgres_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+    volumes:
+      - rolify-postgres:/var/lib/postgresql/data
+    networks:
+      - rolify
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  redis:
+    image: redis:alpine
+    networks:
+      - rolify
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  rolify:
+    driver: overlay
+
+  traefik_traefik_proxy:
+    external: true
+
+volumes:
+  rolify-postgres:
+  rolify-storage:
+  rolify-public-assets:
+
+secrets:
+  rolify_postgres_db:
+    external: true
+  rolify_postgres_user:
+    external: true
+  rolify_postgres_password:
+    external: true
+
