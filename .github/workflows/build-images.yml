@@ -25,13 +25,23 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
           
       # Build Image
-      - name: Build Image
+      - name: Build App
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./docker/common/php-fpm/Dockerfile
           push: true
           tags: hub.ar5.in/rolify/app:0.1.7-test
+          target: production
+          
+      # Build Image
+      - name: Build Web Server
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./docker/staging/nginx/Dockerfile
+          push: true
+          tags: hub.ar5.in/rolify/web:0.1.7-test
   
   deploy:
     runs-on: ubuntu-latest
