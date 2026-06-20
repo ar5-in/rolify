@@ -23,11 +23,12 @@ services:
       # -----------------------------------------------------------
       - "${NGINX_PORT:-80}:80"
     depends_on:
-      php-fpm:
+      app:
         condition: service_healthy  # Wait for php-fpm health check
 
-  php-fpm:
+  app:
     # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    image: rolify-app
     build:
       context: .
       dockerfile: ./docker/common/php-fpm/Dockerfile
@@ -38,6 +39,7 @@ services:
       - rolify-prod-storage:/var/www/storage  # Mount the storage volume
     env_file:
       - .env
+
     networks:
       - rolify-prod-network
     healthcheck:
@@ -51,6 +53,46 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  scheduler:
+    # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    image: rolify-app
+    environment:
+      CONTAINER_ROLE: scheduler
+      #env_file:
+      # Load the environment variables from the Laravel application
+      #- .env
+    # user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - rolify-prod-public-assets:/var/www/public/build  # Mount built public assets to ensure the manifest.json and hashed files match between Nginx and PHP-FPM
+      - rolify-prod-storage:/var/www/storage  # Mount the storage volume
+    env_file:
+      - .env
+    networks:
+      - rolify-prod-network
+    depends_on:
+      app:
+        condition: service_healthy  # Wait for postgres to start
+
+  queue:
+    # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    image: rolify-app
+    environment:
+      CONTAINER_ROLE: queue
+      #env_file:
+      # Load the environment variables from the Laravel application
+      #- .env
+    # user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - rolify-prod-public-assets:/var/www/public/build  # Mount built public assets to ensure the manifest.json and hashed files match between Nginx and PHP-FPM
+      - rolify-prod-storage:/var/www/storage  # Mount the storage volume
+    env_file:
+      - .env
+    networks:
+      - rolify-prod-network
+    depends_on:
+      app:
+        condition: service_healthy  # Wait for postgres to start
 
   postgres:
     image: postgres:16
