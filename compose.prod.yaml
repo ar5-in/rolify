@@ -92,7 +92,9 @@ services:
       - rolify-prod-network
     depends_on:
       app:
-        condition: service_healthy  # Wait for postgres to start
+        condition: service_healthy  # Wait for php-fpm to start
+      redis:
+        condition: service_healthy  # Ensure Redis is available for queues
 
   postgres:
     image: postgres:16

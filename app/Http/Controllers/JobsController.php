@@ -6,7 +6,9 @@ use App\Http\Resources\JobResource;
 use App\Models\Employer;
 use App\Models\Job;
 use App\Models\Tag;
+use App\Events\JobCreated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class JobsController extends Controller
@@ -86,6 +88,11 @@ class JobsController extends Controller
         // create job
         $attributes['is_featured'] = $request->has('is_featured');
         $job = Job::create($attributes);
+
+        // Dispatch domain event after commit so emails are only queued if TX succeeds
+        DB::afterCommit(function () use ($job) {
+            JobCreated::dispatch($job);
+        });
 
         // process tags
         if ($request->input('tags') ?? false) {

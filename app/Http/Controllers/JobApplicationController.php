@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Job;
 use App\Models\JobApplication;
+use App\Events\ApplicationCreated;
+use App\Events\ApplicationStatusUpdated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class JobApplicationController extends Controller
@@ -48,6 +51,11 @@ class JobApplicationController extends Controller
         // create new
         $jobApplication = auth()->user()->applications()->create($attributes);
 
+        // Dispatch after commit to ensure persistence
+        DB::afterCommit(function () use ($jobApplication) {
+            ApplicationCreated::dispatch($jobApplication);
+        });
+
         if($request->expectsJson())
         {
             return response('', 201);
@@ -72,8 +80,14 @@ class JobApplicationController extends Controller
                 'status' => 'required'
             ]);
 
-            // update
+            // capture old status then update
+            $oldStatus = $jobApplication->status;
             $jobApplication->update($attributes);
+
+            // dispatch status updated after commit
+            DB::afterCommit(function () use ($jobApplication, $oldStatus) {
+                ApplicationStatusUpdated::dispatch($jobApplication, $oldStatus, $jobApplication->status);
+            });
 
             if($request->expectsJson())
             {

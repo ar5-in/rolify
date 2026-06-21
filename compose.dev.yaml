@@ -81,7 +81,9 @@ services:
       - rolify-dev-net
     depends_on:
       app:
-        condition: service_started  # Wait for postgres to start
+        condition: service_started  # Wait for php-fpm to start
+      redis:
+        condition: service_started  # Ensure Redis is available for queues
 
   workspace:
     # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
@@ -123,6 +125,14 @@ services:
 
   redis:
     image: redis:alpine
+    networks:
+      - rolify-dev-net
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
     networks:
       - rolify-dev-net
 
