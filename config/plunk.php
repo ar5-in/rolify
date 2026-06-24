@@ -22,7 +22,7 @@ return [
     | it will be your domain, for example 'https://plunk.yourdomain.com'.
     |
     */
-    'api_url' => env('PLUNK_API_URL', 'https://api.useplunk.com'),
+    'api_url' => env('PLUNK_API_URL', 'https://next-api.useplunk.com'),
 
     /*
     |--------------------------------------------------------------------------
