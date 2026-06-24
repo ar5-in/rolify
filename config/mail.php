@@ -37,6 +37,10 @@ return [
 
     'mailers' => [
 
+        'plunk' => [
+            'transport' => 'plunk',
+        ],
+
         'smtp' => [
             'transport' => 'smtp',
             'scheme' => env('MAIL_SCHEME'),

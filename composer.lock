@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3ba6601231207a1d94b1f51305dc7c6c",
+    "content-hash": "4116902fed4372290c3c1428baec5971",
     "packages": [
         {
             "name": "brick/math",
@@ -2073,6 +2073,70 @@
                 }
             ],
             "time": "2024-12-08T08:18:47+00:00"
+        },
+        {
+            "name": "marceloeatworld/plunk-laravel",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marceloeatworld/plunk-laravel.git",
+                "reference": "fdde01909de5812e8b0edbf518fa287a7a7efd60"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marceloeatworld/plunk-laravel/zipball/fdde01909de5812e8b0edbf518fa287a7a7efd60",
+                "reference": "fdde01909de5812e8b0edbf518fa287a7a7efd60",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/mail": "^10.0|^11.0|^12.0",
+                "illuminate/support": "^10.0|^11.0|^12.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "phpunit/phpunit": "^10.0|^11.0|^12.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Plunk": "MarceloEatWorld\\PlunkLaravel\\Facades\\Plunk"
+                    },
+                    "providers": [
+                        "MarceloEatWorld\\PlunkLaravel\\PlunkServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MarceloEatWorld\\PlunkLaravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "marcelo",
+                    "email": "diagngo@gmail.com"
+                }
+            ],
+            "description": "Laravel mail transport for Plunk API with event tracking and email verification",
+            "keywords": [
+                "email",
+                "laravel",
+                "mail",
+                "plunk",
+                "transactional",
+                "transport"
+            ],
+            "support": {
+                "issues": "https://github.com/marceloeatworld/plunk-laravel/issues",
+                "source": "https://github.com/marceloeatworld/plunk-laravel/tree/v1.0.0"
+            },
+            "time": "2026-03-29T21:36:47+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -9078,5 +9142,5 @@
         "php": "^8.2"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
