@@ -29,13 +29,17 @@ services:
     env_file:
       - .env
     secrets:
+      - rolify_app_key
       - rolify_postgres_db
       - rolify_postgres_user
       - rolify_postgres_password
+      - rolify_stg_plunk_api_key
     environment:
-      - POSTGRES_DB_FILE=/run/secrets/rolify_postgres_db
-      - POSTGRES_USER_FILE=/run/secrets/rolify_postgres_user
-      - POSTGRES_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+      - APP_KEY_FILE=/run/secrets/rolify_app_key
+      - DB_DATABASE_FILE=/run/secrets/rolify_postgres_db
+      - DB_USERNAME_FILE=/run/secrets/rolify_postgres_user
+      - DB_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+      - PLUNK_API_KEY_FILE=/run/secrets/rolify_stg_plunk_api_key
     networks:
       - rolify
     healthcheck:
@@ -59,13 +63,17 @@ services:
     env_file:
       - .env
     secrets:
+      - rolify_app_key
       - rolify_postgres_db
       - rolify_postgres_user
       - rolify_postgres_password
+      - rolify_stg_plunk_api_key
     environment:
-      - POSTGRES_DB_FILE=/run/secrets/rolify_postgres_db
-      - POSTGRES_USER_FILE=/run/secrets/rolify_postgres_user
-      - POSTGRES_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+      - APP_KEY_FILE=/run/secrets/rolify_app_key
+      - DB_DATABASE_FILE=/run/secrets/rolify_postgres_db
+      - DB_USERNAME_FILE=/run/secrets/rolify_postgres_user
+      - DB_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+      - PLUNK_API_KEY_FILE=/run/secrets/rolify_stg_plunk_api_key
       - CONTAINER_ROLE=scheduler
     networks:
       - rolify
@@ -84,13 +92,17 @@ services:
     env_file:
       - .env
     secrets:
+      - rolify_app_key
       - rolify_postgres_db
       - rolify_postgres_user
       - rolify_postgres_password
+      - rolify_stg_plunk_api_key
     environment:
-      - POSTGRES_DB_FILE=/run/secrets/rolify_postgres_db
-      - POSTGRES_USER_FILE=/run/secrets/rolify_postgres_user
-      - POSTGRES_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+      - APP_KEY_FILE=/run/secrets/rolify_app_key
+      - DB_DATABASE_FILE=/run/secrets/rolify_postgres_db
+      - DB_USERNAME_FILE=/run/secrets/rolify_postgres_user
+      - DB_PASSWORD_FILE=/run/secrets/rolify_postgres_password
+      - PLUNK_API_KEY_FILE=/run/secrets/rolify_stg_plunk_api_key
       - CONTAINER_ROLE=queue
     networks:
       - rolify
@@ -153,10 +165,14 @@ volumes:
   rolify-public-assets:
 
 secrets:
+  rolify_app_key:
+    external: true
   rolify_postgres_db:
     external: true
   rolify_postgres_user:
     external: true
   rolify_postgres_password:
+    external: true
+  rolify_stg_plunk_api_key:
     external: true
 
