@@ -122,7 +122,19 @@ class JobFactory extends Factory
                 "Research Software Engineer",
             ]),
             'compensation' => fake()->randomElement(['$50,000 per year', '$20,000 per year', '$150,000 per year', '$75,000 per year']),
-            'location' => fake()->randomElement(['New York', 'Los Angeles', 'Manhattan', 'Florida']),
+            'location' => fake()->randomElement([
+                "San Francisco",
+                "Seattle",
+                "Austin",
+                "New York",
+                "Boston",
+                "London",
+                "Berlin",
+                "Dublin",
+                "Amsterdam",
+                "Paris",
+                "Remote"
+            ]),
             'is_featured' => fake()->randomElement([true, false])
         ];
     }

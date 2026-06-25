@@ -8,17 +8,12 @@ import {useState} from "react";
 import FormGroup from "@/Shared/Form/FormGroup.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
 import ManageEmployersDialog from "@/Shared/ManageEmployers/ManageEmployerDialog.jsx";
+import {locations} from "@/Shared/JobLocations.js";
 
 export default function Create({employers}) {
     const [isManageEmployersDialogOpen, setIsManageEmployersDialogOpen] = useState(false);
     const [employerOptions, setEmployerOptions] = useState(employers.map(employer => ({value: employer.id, label: employer.name})));
     const addNotification = useAddNotification();
-
-    const locationOptions = [
-        {value: 'New York', label: 'New York'},
-        {value: 'Los Angeles', label: 'Los Angeles'},
-        {value: 'Florida', label: 'Florida'},
-    ]
 
     const handleCreateJobResponse = (response) => {
         const job = response.data && response.data.job ? response.data.job : null;
@@ -57,7 +52,7 @@ export default function Create({employers}) {
                     <FormControl label="Compensation" name="compensation" type="text"
                                  placeholder="$20,000 per year" />
 
-                    <FormControl label="Location" name="location" type="select" options={locationOptions}
+                    <FormControl label="Location" name="location" type="select" options={locations}
                                  />
 
                     <FormControl label="is Featured" name="is_featured" type="checkbox"

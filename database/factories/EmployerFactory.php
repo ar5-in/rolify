@@ -17,8 +17,6 @@ class EmployerFactory extends Factory
      */
     public function definition(): array
     {
-        $companyName = fake()->company();
-        $initials = implode('', array_slice(array_map(fn($word) => substr($word, 0, 1), explode(' ', str_replace(['-', 'AND', '&', 'OF'], ' ', strtoupper($companyName)))), 0, 2));
         $colors = fake()->randomElement([
             ['#ffffff', '#000000'],
             ['#73EEDC', '#5F1A37'],
@@ -29,11 +27,16 @@ class EmployerFactory extends Factory
 
         return [
             'user_id' => User::factory(),
-            'name' => $companyName,
+            'name' => fake()->company(),
             'logo_url' => null,
-            'initials' => $initials,
+            'initials' => fn (array $attributes) => self::getInitialsFrom($attributes['name']),
             'foreground' => $colors[0],
             'background' => $colors[1]
         ];
+    }
+
+    static protected function getInitialsFrom(string $name): string
+    {
+        return implode('', array_slice(array_map(fn($word) => substr($word, 0, 1), explode(' ', str_replace(['-', 'AND', '&', 'OF'], ' ', strtoupper($name)))), 0, 2));
     }
 }
