@@ -2,7 +2,7 @@ import {Link} from "@inertiajs/react";
 
 export default function SiteNavLink({variant = 'standard', href, active = false, type = 'a', callToAction = false, onClick, children}) {
     const standardClasses = callToAction
-        ? "block px-6 py-2 bg-header-text text-header-bg rounded-full"
+        ? "block px-6 py-2 bg-header-text text-header-bg rounded-full  transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0.5"
         : "cursor-pointer px-3 flex items-center text-center " + (
             active
                 ? "border-b-2 border-b-header-text"

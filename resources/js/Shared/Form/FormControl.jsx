@@ -95,6 +95,14 @@ export default function FormControl({
             </>
             break;
 
+        case 'color':
+            control = <>
+                <input id={id} name={name} type={type} onChange={onChange.bind(this)}
+                       value={value} placeholder={placeholder} disabled={isControlDisabled}
+                       className={`w-12 h-12 ${disabledControlClasses}`}/>
+            </>
+            break;
+
         default:
             control = <>
                 <input id={id} name={name} type={type} onChange={onChange.bind(this)}
@@ -104,7 +112,7 @@ export default function FormControl({
     }
 
     return (
-        <div className="flex flex-col my-3 mb-5 first:mt-0">
+        <div className={`flex flex-col my-3 mb-5${type==='color'?' items-center':''}`}>
             {showLabel && <Label label={label} id={id}/>}
             {hasAction
                 ? <ActionWrapper label={actionLabel} onClick={onAction} disabled={actionDisabled}>{control}</ActionWrapper>

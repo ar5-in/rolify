@@ -4,7 +4,9 @@ export default function Button({ label = 'Button', type, variant, href, disabled
 
     const getClasses = (variant) => {
         const classes = {
-            'default': 'inline-block bg-primary text-body-bg px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer',
+            'default': `inline-block bg-primary text-body-bg px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer`,
+            'approve': `inline-block bg-approved text-body-bg px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer`,
+            'reject': `inline-block bg-rejected text-body-bg px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer`,
             'alternate': 'inline-block text-primary hover:bg-black/10 px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer',
             'danger': 'inline-block ml-auto text-red-600 hover:bg-black/10 px-6 py-2 rounded-full text-lg text-center font-bold cursor-pointer'
         }

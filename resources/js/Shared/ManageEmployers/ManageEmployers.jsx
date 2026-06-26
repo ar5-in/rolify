@@ -67,7 +67,7 @@ export default function ManageEmployers({onUpdate}) {
                     ? <div>
                         <EmployersList onSelectEmployer={handleSelectEmployer}
                                        employers={employers}/>
-                        <div className={`p-4 flex justify-center`}>
+                        <div className={`p-4 flex justify-center sticky bottom-0`}>
                             <Button label={`+ Create New`} onClick={() => {
                                 setIsEditing(true);
                                 setSelectedEmployer(null);
@@ -156,7 +156,7 @@ function EmployerForm({employer, onCreate, onUpdate, onDelete, onAbort}) {
                              placeholder="AC" disabled={false}/>
                 <FormControl label="Logo URL" name="logo_url" type="text" initialValue={data.logo_url ?? ''}
                              placeholder="https://urltologo" disabled={false}/>
-                <div className={`flex`}>
+                <div className={`flex justify-around`}>
                     <FormControl label="Foreground" name="foreground" type="color"
                                  placeholder="#ffffff" disabled={false} initialValue={data.foreground}/>
                     <FormControl label="Background" name="background" type="color"

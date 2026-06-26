@@ -61,7 +61,7 @@ function Applications({job}) {
                         ? <div className="p-10 text-2xl text-center font-medium text-black/20">No application received
                             yet</div>
                         : job.applications.map(application => (
-                            <div key={application.id} className="p-5 border border-black/10 rounded-2xl">
+                            <div key={application.id} className={`p-5 border border-black/10 rounded-2xl transition-opacity ${application.status === 'pending' && 'bg-white'} ${application.status === 'rejected' && 'opacity-50 hover:opacity-100'}`}>
                                 <h4 className="mb-2 text-lg font-medium space-x-2">
                                     <span>Applicant:
                                     <span className="text-primary">{application.user.name} ({application.user.email})</span>
@@ -139,20 +139,20 @@ function Status({application}) {
         <>
             {application.status === 'pending'
                 ? <div className="flex gap-2 mt-5 pt-5 border-t border-t-black/10">
-                    <button
-                        className="bg-green-800 text-body-bg px-6 py-2 rounded-full text-lg font-bold cursor-pointer disabled:opacity-50"
+                    <Button
+                        variant={`approve`}
+                        className="bg-approved text-body-bg px-6 py-2 rounded-full text-lg font-bold cursor-pointer disabled:opacity-50"
                         disabled={status.isUpdating}
                         onClick={() => approve(application)}
-                    >
-                        {status.isUpdating && status.futureValue === 'approved' ? 'Approving...' : 'Approve'}
-                    </button>
-                    <button
+                        label={status.isUpdating && status.futureValue === 'approved' ? 'Approving...' : 'Approve'}
+                    />
+                    <Button
+                        variant={`reject`}
                         className="bg-amber-900 text-body-bg px-6 py-2 rounded-full text-lg font-bold cursor-pointer disabled:opacity-50"
                         disabled={status.isUpdating}
                         onClick={() => reject(application)}
-                    >
-                        {status.isUpdating && status.futureValue === 'rejected' ? 'Rejecting...' : 'Reject'}
-                    </button>
+                        label={status.isUpdating && status.futureValue === 'rejected' ? 'Rejecting...' : 'Reject'}
+                    />
                 </div>
                 : <div
                     className={`mt-5 pt-5 border-t border-t-black/10 text-${application.status}`}>You {application.status} the

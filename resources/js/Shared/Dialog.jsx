@@ -4,7 +4,7 @@ import Button from "./Button.jsx";
 export default function ({title, children, onClose}) {
     return createPortal(
         <div className={
-            `fixed top-0 left-0 w-full h-full p-4 bg-black/10 flex items-center justify-center isolate`
+            `fixed top-0 left-0 z-10 w-full h-full p-4 bg-black/10 flex items-center justify-center isolate`
         }>
             <div className={`bg-body-bg rounded-2xl grow sm:max-w-md drop-shadow-2xl`}>
                 <div className={`border-b border-b-primary/10 py-2 px-4 flex justify-between items-center`}>
@@ -20,7 +20,7 @@ export default function ({title, children, onClose}) {
                         </svg>
                     </button>
                 </div>
-                <div>
+                <div className={`max-h-[80dvh] overflow-auto`}>
                     {children}
                 </div>
             </div>
