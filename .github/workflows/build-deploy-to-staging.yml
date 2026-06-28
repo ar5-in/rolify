@@ -1,5 +1,5 @@
-name: Build Images and deploy to staging server
-run-name: ${{ github.actor }} building images and deploying to staging server
+name: Staging Deployment
+run-name: ${{ github.actor }} testing application, building images, and deploying to staging server
 
 on:
   # Trigger manually
@@ -11,8 +11,38 @@ on:
       - develop
 
 jobs:
+  tests:
+    name: Run Test Suite
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, dom, sqlite3, pdo_sqlite
+          coverage: none
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --no-check-publish
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate --ansi
+
+      - name: Run tests (Pest)
+        run: |
+          vendor/bin/pest --colors=always --ci
+
   build:
     runs-on: ubuntu-latest
+    needs: tests
 
     steps:
       # Checkout
