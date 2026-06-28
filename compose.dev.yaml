@@ -14,16 +14,18 @@ services:
     networks:
       - rolify-dev-net
     depends_on:
-      php-fpm:
+      app:
         condition: service_started  # Wait for php-fpm to start
 
-  php-fpm:
+  app:
     # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    image: rolify-app
     build:
       context: .
       dockerfile: ./docker/common/php-fpm/Dockerfile
       target: development
       args:
+        CONTAINER_ROLE: app
         UID: ${UID:-1000}
         GID: ${GID:-1000}
         XDEBUG_ENABLED: ${XDEBUG_ENABLED:-true}
@@ -44,6 +46,44 @@ services:
     depends_on:
       postgres:
         condition: service_started  # Wait for postgres to start
+
+  scheduler:
+    # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    image: rolify-app
+    environment:
+      CONTAINER_ROLE: scheduler
+    #env_file:
+      # Load the environment variables from the Laravel application
+      #- .env
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      # Mount the application code for live updates
+      - ./:/var/www
+    networks:
+      - rolify-dev-net
+    depends_on:
+      app:
+        condition: service_started  # Wait for postgres to start
+
+  queue:
+    # For the php-fpm service, we will create a custom image to install the necessary PHP extensions and setup proper permissions.
+    image: rolify-app
+    environment:
+      CONTAINER_ROLE: queue
+    #env_file:
+      # Load the environment variables from the Laravel application
+      #- .env
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      # Mount the application code for live updates
+      - ./:/var/www
+    networks:
+      - rolify-dev-net
+    depends_on:
+      app:
+        condition: service_started  # Wait for php-fpm to start
+      redis:
+        condition: service_started  # Ensure Redis is available for queues
 
   workspace:
     # For the workspace service, we will also create a custom image to install and setup all the necessary stuff.
@@ -85,6 +125,14 @@ services:
 
   redis:
     image: redis:alpine
+    networks:
+      - rolify-dev-net
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
     networks:
       - rolify-dev-net
 

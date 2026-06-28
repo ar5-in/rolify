@@ -1,6 +1,21 @@
 #!/bin/sh
 set -e
 
+# export Docker Secrets as Environment Variables
+# -----------------------------------------------------------
+
+echo "Exported fake env for testing"
+export "FAKE_ENV=Fake"
+
+for VAR in $(env | grep '_FILE=' | cut -d= -f1); do
+    FILE=$(printenv "$VAR")
+    NAME=${VAR%_FILE}
+
+    export "$NAME=$(cat "$FILE")"
+    echo "Exported ${NAME}"
+    unset "$VAR"
+done
+
 # Initialize storage directory if empty
 # -----------------------------------------------------------
 # If the storage directory is empty, copy the initial contents

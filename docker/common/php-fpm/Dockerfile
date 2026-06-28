@@ -85,6 +85,10 @@ RUN curl -o /usr/local/bin/php-fpm-healthcheck \
 COPY ./docker/production/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# Copy the start script
+COPY ./docker/common/php-fpm/start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
 # Copy the initial storage structure
 COPY ./storage /var/www/storage-init
 
@@ -127,7 +131,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["/usr/local/bin/start.sh"]
 
 
 # Stage 3: Development image
@@ -189,4 +193,4 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
-CMD ["php-fpm"]
+CMD ["/usr/local/bin/start.sh"]

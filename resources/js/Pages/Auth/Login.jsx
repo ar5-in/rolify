@@ -6,8 +6,8 @@ import {router} from "@inertiajs/react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
 import Card from "../../Shared/Card.jsx";
-import CardFooter from "../../Shared/CardFooter.jsx";
-import CardHead from "../../Shared/CardHead.jsx";
+import {useState} from "react";
+import FloatingDemoDataButton from "../../Shared/FloatingDemoDataButton.jsx";
 
 export default function Login({}) {
     const addNotification = useAddNotification();
@@ -20,6 +20,19 @@ export default function Login({}) {
         router.visit(redirectTo);
     }
 
+    const [emailKey, setEmailKey] = useState(0);
+    const [emailValue, setEmailValue] = useState('');
+
+    const [passwordKey, setPasswordKey] = useState(0);
+    const [passwordValue, setPasswordValue] = useState('');
+
+    const setLoginCredentials = (email, password) => {
+        setEmailValue(email);
+        setEmailKey(key => key+1);
+        setPasswordValue(password);
+        setPasswordKey(key=> key+1);
+    }
+
     return (
         <div className={`mx-auto max-w-xl`}>
             <Page heading="Login">
@@ -27,11 +40,14 @@ export default function Login({}) {
                 <RequestForm wide action="/login" method="post" onResolve={handleResolve.bind(this)}>
                     <Card>
                         <div className={`p-3 bg-transparent border border-black/10 rounded-xl`}>
-                            <FormControl label="Email" name="email" type="email"
-                                         placeholder="Email Address"/>
-
-                            <FormControl label="Password" name="password" type="password"
-                                         placeholder="Password"/>
+                            <>
+                                <FormControl key={emailKey} label="Email" name="email" type="email"
+                                             placeholder="Email Address" initialValue={emailValue} />
+                            </>
+                            <>
+                                <FormControl key={passwordKey} label="Password" name="password" type="password"
+                                             placeholder="Password" initialValue={passwordValue} />
+                            </>
                         </div>
                         <div className={`px-3 py-5`}>
                             <FormActionGroup>
@@ -43,6 +59,9 @@ export default function Login({}) {
                 </RequestForm>
 
             </Page>
+            <FloatingDemoDataButton
+                onClick={(data) => setLoginCredentials(data.email, data.password)}
+            />
         </div>
     )
 }
