@@ -6,6 +6,7 @@ use App\Models\Employer;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\Role;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -20,6 +21,9 @@ class DemoDataSeeder extends Seeder
         // Ensure base roles exist
         $recruiterRole = Role::firstOrCreate(['title' => 'Recruiter']);
         $candidateRole = Role::firstOrCreate(['title' => 'Candidate']);
+
+        // Create Tags
+        $tags = Tag::factory(200)->create();
 
         // Create accessible demo users
         $recruiter = User::updateOrCreate(
@@ -84,7 +88,9 @@ class DemoDataSeeder extends Seeder
         $candidatePool = collect([$candidate])->merge($extraCandidates);
 
         // 1) Ensure 5 jobs are owned by the demo recruiter
-        $recruiterJobs = Job::factory(5)->create([
+        $recruiterJobs = Job::factory(5)
+            ->hasAttached($tags->random(5))
+            ->create([
             'employer_id' => $recruiterEmployer->id,
         ]);
 
@@ -93,7 +99,7 @@ class DemoDataSeeder extends Seeder
         $otherJobs = collect();
         for ($i = 0; $i < $remaining; $i++) {
             $employer = $employers[$i % $employers->count()];
-            $otherJobs->push(Job::factory()->create([
+            $otherJobs->push(Job::factory()->hasAttached($tags->random(5))->create([
                 'employer_id' => $employer->id,
             ]));
         }
