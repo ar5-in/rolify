@@ -1,4 +1,4 @@
-import {Head} from "@inertiajs/react";
+import {Head, Link} from "@inertiajs/react";
 import Page from "../Shared/Page.jsx";
 import Card from "../Shared/Card.jsx";
 import CardHead from "../Shared/CardHead.jsx";
@@ -18,11 +18,26 @@ const FAQ = () => {
             answer: <>Rolify has an automated email notification system built-in. It automatically sends out email updates at every critical step of the process—such as when a job is posted, when a candidate applies, and when an application is approved or rejected.</>
         },
         {
+            question: "How can I test or demo the Rolify prototype?",
+            answer: <>
+                You can explore and test the application using two different methods depending on what you want to experience:
+                <ul className={`mt-5 flex flex-col gap-4`}>
+                    <li>
+                        <strong className="text-primary">Method 1 (Quick Tour):</strong> Log in using the provided <strong className="text-primary">demo accounts</strong> to instantly experience the platform's features from either a recruiter's or a candidate's perspective. You can access the demo accounts from the bottom right of the <Link className={`text-primary underline`} href={'/login'}>Login</Link> page.
+                    </li>
+                    <li>
+                        <strong className="text-primary">Method 2 (Full Experience):</strong> <strong className="text-primary">Create a new account</strong> using your actual email address. This allows you to test the live email notification system and see exactly how updates are sent out during the job posting and application process.
+
+                    </li>
+                </ul>
+            </>
+        },
+        {
             question: "What technology stack is used to build Rolify?",
             answer: (
                 <>
                     Rolify is built using a powerful full-stack combination:
-                    <ul>
+                    <ul className={`mt-5 flex flex-col gap-4`}>
                         <li><strong className="text-primary">Backend:</strong> Laravel (PHP framework)</li>
                         <li><strong className="text-primary">Frontend:</strong> React (JavaScript library)</li>
                         <li><strong className="text-primary">Styling:</strong> TailwindCSS (for a custom, responsive user interface)</li>
@@ -55,7 +70,7 @@ const FAQ = () => {
             answer: (
                 <>
                     Rolify was designed and developed by <strong className="text-primary">Arshad Ansari</strong>.
-                    <ul>
+                    <ul className={`mt-5 flex flex-col gap-4`}>
                         <li>
                             You can view the open-source code on GitHub at:{' '}
                             <a className="text-primary underline" href="https://github.com/ar5-in/rolify" target="_blank" rel="noopener noreferrer">
