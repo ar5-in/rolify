@@ -6,10 +6,7 @@ import {router} from "@inertiajs/react";
 import {useAddNotification} from "@/Shared/Notifications/NotificationsContext.jsx";
 import FormAction from "@/Shared/Form/FormAction.jsx";
 import Card from "../../Shared/Card.jsx";
-import CardFooter from "../../Shared/CardFooter.jsx";
-import CardHead from "../../Shared/CardHead.jsx";
 import {useState} from "react";
-import Button from "../../Shared/Button.jsx";
 import FloatingDemoDataButton from "../../Shared/FloatingDemoDataButton.jsx";
 
 export default function Login({}) {
