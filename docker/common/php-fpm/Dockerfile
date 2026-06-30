@@ -90,7 +90,7 @@ COPY ./docker/common/php-fpm/start.sh /usr/local/bin/start.sh
 RUN chmod +x /usr/local/bin/start.sh
 
 # Copy the initial storage structure
-COPY ./storage /var/www/storage-init
+# COPY ./storage /var/www/storage-init
 
 # Copy PHP extensions and libraries from the builder stage
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
@@ -112,16 +112,20 @@ RUN sed -i '/^\[www\]/a pm.status_path = /status' /usr/local/etc/php-fpm.d/www.c
 #RUN sed -i 's/variables_order = "GPCS"/variables_order = "EGPCS"/' "$PHP_INI_DIR/php.ini"
 
 # Copy the application code and dependencies from the build stage
-COPY --from=builder /var/www /var/www
+# COPY --from=builder /var/www /var/www
 
 # Copy production built assets to a temporary location. In entrypoint.sh, they will be synced to the volume
-COPY --from=frontend /app/public/build /var/www/frontend-assets
+# COPY --from=frontend /app/public/build /var/www/frontend-assets
 
 # Set working directory
 WORKDIR /var/www
+RUN chown www-data:www-data /var/www
+COPY --from=builder --chown=www-data:www-data /var/www /var/www
+COPY --from=frontend --chown=www-data:www-data /app/public/build /var/www/frontend-assets
+COPY --chown=www-data:www-data ./storage /var/www/storage-init
 
 # Ensure correct permissions
-RUN chown -R www-data:www-data /var/www
+# RUN chown -R www-data:www-data /var/www
 
 # Switch to the non-privileged user to run the application
 USER www-data
@@ -186,7 +190,7 @@ COPY ./docker/development/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Switch back to the non-privileged user to run the application
-USER www-data
+USER www
 
 # Change the default command to run the entrypoint script
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
