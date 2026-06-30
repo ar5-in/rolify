@@ -124,6 +124,9 @@ COPY --from=builder --chown=www-data:www-data /var/www /var/www
 COPY --from=frontend --chown=www-data:www-data /app/public/build /var/www/frontend-assets
 COPY --chown=www-data:www-data ./storage /var/www/storage-init
 
+RUN mkdir -p /var/www/public/build /var/www/storage \
+    && chown -R www-data:www-data /var/www
+
 # Ensure correct permissions
 # RUN chown -R www-data:www-data /var/www
 
