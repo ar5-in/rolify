@@ -26,7 +26,8 @@ if [ "${CONTAINER_ROLE:-app}" = "app" ]; then
 
     if [ "$(ls -A /var/www/frontend-assets)" ]; then
         echo "Syncing frontend assets..."
-        rsync -av --delete /var/www/frontend-assets/ /var/www/public/build/
+        rm -rf /var/www/public/build/* /var/www/public/build/.* 2>/dev/null || true
+        cp -R /var/www/frontend-assets/. /var/www/public/build/
     fi
 
     # Run Laravel migrations
@@ -44,8 +45,14 @@ if [ "${CONTAINER_ROLE:-app}" = "app" ]; then
 fi
 
 # 3. Clean up the initialization directory safely
-if [ "${CONTAINER_ROLE:-app}" = "app" ] && [ -d /var/www/storage-init ]; then
-    rm -rf /var/www/storage-init
+if [ "${CONTAINER_ROLE:-app}" = "app" ]; then
+    if [ -d /var/www/storage-init ]; then
+        rm -rf /var/www/storage-init
+    fi
+
+    if [ -d /var/www/frontend-assets ]; then
+        rm -rf /var/www/frontend-assets
+    fi
 fi
 
 # Run the default command
